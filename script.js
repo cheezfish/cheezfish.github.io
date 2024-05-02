@@ -26,19 +26,19 @@ button.onclick = function() {
 
 var granimInstance = new Granim({
     element: '#canvas-image-blending',
-    direction: 'top-bottom',
+    direction: 'radial',
     isPausedWhenNotInView: true,
     image : {
         source: '/profile/squareprofile5.png',
-        blendingMode: 'soft-light'
+        blendingMode: 'destination-atop',
     },
     states : {
         "default-state": {
             gradients: [
-                ['#29323c', '#485563'],
-                ['#FF6B6B', '#556270'],
-                ['#80d3fe', '#7ea0c4'],
-                ['#f0ab51', '#eceba3']
+                ['#000000', '#1EAEDB'],
+                ['#000000', '#9412A5'],
+                ['#000000', '#1E6AE1'],
+                ['#000000', '#1EAEDB']
             ],
             transitionSpeed: 7000
         }
