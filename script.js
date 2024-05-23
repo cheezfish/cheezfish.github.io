@@ -30,7 +30,7 @@ var granimInstance = new Granim({
     direction: 'radial',
     isPausedWhenNotInView: true,
     image : {
-        source: '/profile/ppACTUAL.png',
+        source: '/profile/pptesty.png',
         blendingMode: 'destination-atop',
     },
     states : {
