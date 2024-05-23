@@ -185,6 +185,7 @@ h3 {
   
   .socials-block {
     display: flex;
+    margin-right: 60px;
   }
   
   .social-icon {

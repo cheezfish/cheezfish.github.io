@@ -22,6 +22,7 @@ button.onclick = function() {
     else {
         div.style.display = 'none';
     }
+
 };
 
 var granimInstance = new Granim({
