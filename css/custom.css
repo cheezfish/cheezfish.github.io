@@ -63,6 +63,9 @@ body h1 {
   text-align: center;
 }
 
+
+/* profile-text */
+
 #profile-text {
   width: 100%;
   margin-top: 1vh;
@@ -75,6 +78,103 @@ body h1 {
   text-decoration: underline;
   text-decoration-color: rgba(0, 240, 240, 0.288);
 }
+
+@media (max-width: 768px) {
+  .change-text {
+    animation: none !important;
+  }
+  
+  .change-text:hover {
+    animation: none !important;
+    color: white !important;
+    transform: none !important;
+  }
+  
+  .change-text::after,
+  .change-text:hover::after {
+    display: none !important;
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+.change-text {
+  display: inline-block;
+  width:fit-content;
+  position: relative;
+  font-weight: bold;
+}
+
+.change-text::after {
+  content: "Cheezfish";
+  position: absolute;
+  white-space: nowrap;
+  width: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  color: #1EAEDB;
+}
+
+.change-text:hover {
+  animation: glitch 0.8s steps(1, end) forwards;
+}
+
+.change-text:hover::after {
+  animation: showNew 0.8s steps(1, end) forwards;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    color: inherit;
+  }
+  10% {
+    transform: translate(-2px, 2px);
+    color: #ff00ff;
+  }
+  20% {
+    transform: translate(2px, -2px);
+    color: #00ffff;
+  }
+  30% {
+    transform: translate(-2px, -2px);
+    color: #ffff00;
+  }
+  40% {
+    transform: translate(2px, 2px);
+    color: #ff00ff;
+  }
+  50% {
+    transform: translate(-2px, 2px);
+    color: #00ffff;
+  }
+  60% {
+    transform: translate(-2px, -2px);
+    color: inherit;
+  }
+  100% {
+    transform: translate(0);
+    color: transparent;
+  }
+}
+
+@keyframes showNew {
+  0% {
+    opacity: 0;
+    transform: translate(0);
+  }
+  60% {
+    opacity: 0;
+    transform: translate(2px, -2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+
 
 .socials-block {
   justify-content: space-evenly;
@@ -114,6 +214,7 @@ h3 {
 }
 
 #hello {
+  display: inline;
   font-family: 'Space Mono', monospace;
   font-size: xx-large;
 }
