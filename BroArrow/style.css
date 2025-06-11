@@ -1,0 +1,202 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --background-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --primary-color: #ff9800; /* A vibrant orange for contrast */
+    --section-bg-color: #2c2c2c;
+    --font-main: 'Montserrat', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1, h2 {
+    font-weight: 900;
+    text-align: center;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.content-section {
+    padding: 60px 20px;
+}
+
+/* --- Hero Section --- */
+.hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('images/ss1.jpg'); /* Optional: Use a background image */
+    background-size: cover;
+    background-position: center;
+}
+
+.game-title {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+}
+
+.tagline {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+    max-width: 600px;
+}
+
+/* --- Call to Action (CTA) --- */
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.download-badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allows badges to stack on small screens */
+    gap: 20px;
+}
+
+.store-badge img {
+    height: 60px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.store-badge img:hover {
+    transform: scale(1.05);
+}
+
+.qr-codes {
+    display: flex;
+    gap: 40px;
+}
+
+.qr-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.qr-code img {
+    width: 120px;
+    height: 120px;
+    background: white; /* Ensures QR code is scannable */
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.qr-code p {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin: 0;
+}
+
+
+/* --- Trailer Section --- */
+#trailer {
+    background-color: var(--section-bg-color);
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 900px;
+    margin: 0 auto;
+    border: 4px solid var(--primary-color);
+    border-radius: 10px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* --- Gallery Section --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
+    border-color: var(--primary-color);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #111;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.social-links {
+    margin-bottom: 20px;
+}
+
+.social-links a {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin: 0 15px;
+    transition: color 0.2s ease-in-out;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+}
+
+footer p {
+    margin: 0;
+    color: #888;
+}
+
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 3rem;
+    }
+    .tagline {
+        font-size: 1.2rem;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    .qr-codes {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
