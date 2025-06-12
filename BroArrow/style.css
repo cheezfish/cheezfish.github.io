@@ -59,25 +59,38 @@ h2 {
     justify-content: center;
     text-align: center;
     padding: 20px;
+    /* NEW: Add a subtle radial gradient for depth and visual interest */
+    background: radial-gradient(circle at center, var(--bg-light) 0%, rgba(245, 239, 225, 0.9) 70%, var(--bg-light) 100%);
+    /* You could also consider a subtle background image if you have one that fits the game theme */
+    /* background-image: url('images/subtle-game-texture.png'); */
+    /* background-repeat: repeat; */
+    /* background-size: cover; */
+    /* background-color: var(--bg-light); */
 }
 .hero-content {
     max-width: 1000px;
+    position: relative; /* Ensure content is above any potential background layers */
+    z-index: 2; /* Ensure content is above any potential background layers */
 }
 .logo {
     width: 100%;
     max-width: 800px;
     height: auto;
     margin-bottom: 1rem;
+    /* NEW: Add a subtle drop shadow to make the logo pop */
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
 }
 .tagline {
-    font-size: 1.25rem;
+    font-size: 1.4rem; /* Slightly larger font size */
     font-weight: 700;
     margin-bottom: 2rem;
+    /* NEW: Add a subtle text shadow for better readability and depth */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 .hero-cta {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem; /* Slightly more space between buttons on smaller screens */
 }
 .store-button {
     display: inline-flex;
@@ -89,14 +102,16 @@ h2 {
     font-weight: 700;
     font-size: 1.2rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* NEW: Add a default box-shadow to give buttons a lifted appearance */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* More visible default shadow */
 }
 .store-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transform: translateY(-5px); /* More pronounced lift on hover */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3); /* More pronounced shadow on hover */
 }
 .store-button i {
-    font-size: 1.5rem;
-    margin-right: 10px;
+    font-size: 1.6rem; /* Slightly larger icons */
+    margin-right: 12px; /* Slightly more space next to icons */
 }
 .store-button.apple {
     background-color: #000;
@@ -251,4 +266,12 @@ footer {
     .features-grid { grid-template-columns: repeat(3, 1fr); }
     .gallery-grid { grid-template-columns: repeat(3, 1fr); }
     .download-container { flex-direction: row; }
+
+    /* NEW: Desktop adjustments for hero section */
+    .tagline {
+        font-size: 1.7rem; /* Make tagline larger on desktop */
+    }
+    .hero-cta {
+        gap: 2rem; /* More space between buttons on desktop */
+    }
 }
