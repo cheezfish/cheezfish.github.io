@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bro and Arrow - Official Site</title>
-    <meta name="description" content="Take aim, bro! Launch ragdoll enemies off bridges in this hilarious physics-based archery game. Available now on iOS and Android.">
+    <title>Bro and Arrow - The Viral Action Game</title>
+    <meta name="description" content="Take aim, bro! Launch ragdoll enemies in this hilarious physics-based archery game. Download now on iOS and Android!">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome for Social Icons -->
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
+    <!-- Lightbox Gallery CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css">
+    
     <!-- Your Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -21,33 +24,18 @@
 
     <header class="hero">
         <div class="hero-content">
-            <h1 class="game-title">Bro & Arrow</h1>
-            <p class="tagline">Your arrow. Their ragdoll physics. A whole lot of trouble.</p>
-            
-            <div class="cta-section">
-                <!-- Download Badges -->
-                <div class="download-badges">
-                    <!-- TO-DO: Replace '#' with your actual App Store link -->
-                    <a href="#YOUR_APP_STORE_LINK" target="_blank" class="store-badge">
-                        <img src="https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg" alt="Download on the App Store">
-                    </a>
-                    <!-- TO-DO: Replace '#' with your actual Google Play link -->
-                    <a href="#YOUR_GOOGLE_PLAY_LINK" target="_blank" class="store-badge">
-                        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
-                    </a>
-                </div>
-
-                <!-- QR Codes -->
-                <div class="qr-codes">
-                    <div class="qr-code">
-                        <img src="images/qr-app-store.png" alt="App Store QR Code">
-                        <p>Scan for iOS</p>
-                    </div>
-                    <div class="qr-code">
-                        <img src="images/qr-play-store.png" alt="Google Play QR Code">
-                        <p>Scan for Android</p>
-                    </div>
-                </div>
+            <img src="images/logo.png" alt="Bro and Arrow Game Logo" class="logo animate-on-load">
+            <p class="tagline animate-on-load">Your arrow. Their ragdoll physics. A whole lot of trouble.</p>
+            <div class="hero-cta animate-on-load">
+                <!-- TO-DO: Replace these with your actual store links! -->
+                <a href="https://apps.apple.com/us/app/bro-arrow/id6746156727" target="_blank" class="store-button apple">
+                    <i class="fab fa-apple"></i>
+                    <span>Download for iOS</span>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.cheezfish.broarrow" target="_blank" class="store-button google">
+                    <i class="fab fa-google-play"></i>
+                    <span>Get it on Android</span>
+                </a>
             </div>
         </div>
     </header>
@@ -55,34 +43,70 @@
     <main>
         <!-- Trailer Section -->
         <section id="trailer" class="content-section">
-            <h2>Watch The Trailer</h2>
-            <div class="video-container">
-                <!-- TO-DO: Replace 'dQw4w9WgXcQ' with your YouTube video's ID -->
-                <iframe src="https://www.youtube.com/embed/TgspaSFBsf0" 
-                        title="YouTube video player" frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
+            <h2 class="animate-on-scroll">Watch The Chaos</h2>
+            <div class="video-container animate-on-scroll">
+                <iframe src="https://www.youtube.com/embed/TgspaSFBsf0?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Angled SVG Separator -->
+        <div class="angled-separator"></div>
+
+        <!-- Features Section -->
+        <section id="features" class="content-section dark-section">
+            <div class="features-grid">
+                <div class="feature-item animate-on-scroll">
+                    <i class="fa-solid fa-person-falling-burst"></i>
+                    <h3>Hilarious Ragdolls</h3>
+                    <p>Send your foes flying with satisfying, physics-based chaos.</p>
+                </div>
+                <div class="feature-item animate-on-scroll">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h3>Precision Skillshots</h3>
+                    <p>Master the art of archery with rewarding headshots and trick shots.</p>
+                </div>
+                <div class="feature-item animate-on-scroll">
+                    <i class="fa-solid fa-bomb"></i>
+                    <h3>Non-Stop Action</h3>
+                    <p>An endless onslaught of bros are coming for you. Don't miss!</p>
+                </div>
             </div>
         </section>
 
         <!-- Gallery Section -->
         <section id="gallery" class="content-section">
-            <h2>Screenshots</h2>
-            <div class="gallery-grid">
-                <!-- TO-DO: Add your screenshots here. Just add more <img> tags. -->
-                <!-- Make sure the image paths are correct! -->
-                <img src="images/ss1.png" alt="Bro and Arrow gameplay screenshot 1">
-                <img src="images/ss2.png" alt="Bro and Arrow gameplay screenshot 2">
-                <img src="images/ss3.png" alt="Bro and Arrow gameplay screenshot 3">
-                <img src="images/ss4.png" alt="Bro and Arrow gameplay screenshot 4">
-                <img src="images/ss5.png" alt="Bro and Arrow gameplay screenshot 5">
-                <img src="images/ss6.png" alt="Bro and Arrow gameplay screenshot 6">
-                <!-- Add more screenshots by copying the line above -->
+            <h2 class="animate-on-scroll">Shots Fired</h2>
+            <div id="lightgallery" class="gallery-grid animate-on-scroll">
+                <a href="images/ss1.png"><img src="images/ss1.png" alt="Screenshot 1"></a>
+                <a href="images/ss2.png"><img src="images/ss2.png" alt="Screenshot 2"></a>
+                <a href="images/ss3.png"><img src="images/ss3.png" alt="Screenshot 3"></a>
+                <a href="images/ss4.png"><img src="images/ss4.png" alt="Screenshot 4"></a>
+                <a href="images/ss5.png"><img src="images/ss5.png" alt="Screenshot 5"></a>
+                <a href="images/ss6.png"><img src="images/ss6.png" alt="Screenshot 6">
+            </div>
+        </section>
+
+        <!-- Download Section with QR Codes -->
+        <section id="download" class="content-section dark-section">
+            <h2 class="animate-on-scroll">Download Now!</h2>
+            <p class="section-subtitle animate-on-scroll">Scan with your phone or click a badge to start the mayhem.</p>
+            <div class="download-container animate-on-scroll">
+                <div class="download-card">
+                    <img src="images/qr-app-store.png" alt="App Store QR Code" class="qr-code">
+                    <a href="https://apps.apple.com/us/app/bro-arrow/id6746156727" target="_blank" class="store-badge">
+                        <img src="images/aapl.svg" alt="Download on the App Store">
+                    </a>
+                </div>
+                <div class="download-card">
+                    <img src="images/qr-play-store.png" alt="Google Play QR Code" class="qr-code">
+                    <a href="https://play.google.com/store/apps/details?id=com.cheezfish.broarrow" target="_blank" class="store-badge">
+                        <img src="images/googbadge.png" alt="Get it on Google Play">
+                    </a>
+                </div>
             </div>
         </section>
     </main>
-
+    
     <footer>
         <div class="social-links">
             <a href="https://instagram.com/cheezfish" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -91,6 +115,10 @@
         </div>
         <p>© 2024 Cheezfish. All rights reserved.</p>
     </footer>
+
+    <!-- JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
