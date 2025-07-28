@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>25 Words or Less - Game</title>
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --accent-color: #007bff;
+            --correct-color: #28a745;
+            --pass-color: #ffc107;
+            --timer-alert: #dc3545;
+            --max-words-color: #ff8c00;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: 450px;
+            text-align: center;
+            overflow: hidden; /* Ensures smooth screen transitions */
+        }
+
+        .screen {
+            display: none; /* Hide all screens by default */
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* --- Screens --- */
+
+        /* Start & End Screens */
+        #start-screen h1, #end-screen h1 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+        #start-screen p {
+            margin-bottom: 2rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        .final-stats p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .final-stats span {
+            font-weight: bold;
+        }
+
+        /* Game Screen */
+        .game-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .info-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-box span:first-child {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .info-box span:last-child {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #word-count.limit-reached {
+            color: var(--timer-alert);
+        }
+
+        .word-display-area {
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        #secret-word {
+            font-size: 2.8rem;
+            color: var(--accent-color);
+            margin: 0.5rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #game-status {
+            min-height: 40px;
+            font-style: italic;
+            color: #777;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* --- Buttons --- */
+        button {
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        #start-button, #play-again-button {
+            background-color: var(--accent-color);
+            color: white;
+            grid-column: 1 / -1; /* Make button span full width */
+        }
+
+        #correct-button {
+            background-color: var(--correct-color);
+            color: white;
+        }
+
+        #pass-button {
+            background-color: var(--pass-color);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Screen 1: Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>25 Words or Less</h1>
+            <p>
+                You are the <strong>Explainer</strong>.
+                Press Start to begin the 60-second timer. Describe the words to your partner using 25 words or less in total.
+            </p>
+            <button id="start-button">Start Game</button>
+        </div>
+
+        <!-- Screen 2: Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="info-box">
+                    <span>SCORE</span>
+                    <span id="score">0/5</span>
+                </div>
+                <div class="info-box">
+                    <span>TIMER</span>
+                    <span id="timer">60</span>
+                </div>
+                <div class="info-box">
+                    <span>WORDS USED</span>
+                    <span id="word-count">0</span>
+                </div>
+            </div>
+
+            <div class="word-display-area">
+                <h2 id="secret-word">WORD</h2>
+            </div>
+
+            <div id="game-status">
+                Listening for your voice...
+            </div>
+
+            <div class="controls">
+                <button id="correct-button">Correct!</button>
+                <button id="pass-button">Pass</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: End Screen -->
+        <div id="end-screen" class="screen">
+            <h1>Round Over!</h1>
+            <div class="final-stats">
+                <p>Final Score: <span id="final-score"></span></p>
+                <p>Total Words Used: <span id="final-word-count"></span></p>
+            </div>
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- GAME CONSTANTS ---
+    const GAME_TIME_S = 60;
+    const MAX_WORDS = 25;
+    const WORDS_PER_ROUND = 5;
+    const WORD_LIST = [
+        "Pyramid", "Telescope", "Bicycle", "Symphony", "Volcano", "Dinosaur", "Glacier", "Internet", "Submarine",
+        "Chameleon", "Origami", "Barbecue", "Lighthouse", "Parachute", "Mardi Gras", "Sculpture", "Kangaroo",
+        "Zodiac", "Hashtag", "Honeymoon", "Quarantine", "Robot", "Allergy", "Dream", "Gravity", "Compass",
+        "Auction", "Casino", "Eclipse", "Festival", "Garden", "Hiking", "Island", "Jungle", "Knight", "Laser",
+        "Mirage", "Ninja", "Oxygen", "Pirate", "Queen", "Rainbow", "Safari", "Tornado", "Unicorn", "Vampire", "Wizard"
+    ];
+
+    // --- DOM ELEMENTS ---
+    const screens = {
+        start: document.getElementById('start-screen'),
+        game: document.getElementById('game-screen'),
+        end: document.getElementById('end-screen')
+    };
+    
+    const scoreEl = document.getElementById('score');
+    const timerEl = document.getElementById('timer');
+    const wordCountEl = document.getElementById('word-count');
+    const secretWordEl = document.getElementById('secret-word');
+    const gameStatusEl = document.getElementById('game-status');
+    
+    const startButton = document.getElementById('start-button');
+    const correctButton = document.getElementById('correct-button');
+    const passButton = document.getElementById('pass-button');
+    const playAgainButton = document.getElementById('play-again-button');
+    
+    const finalScoreEl = document.getElementById('final-score');
+    const finalWordCountEl = document.getElementById('final-word-count');
+
+    // --- SPEECH RECOGNITION SETUP ---
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = true; // Keep listening
+        recognition.interimResults = true; // Get results as they come
+        recognition.lang = 'en-US';
+    } else {
+        // Handle browsers that don't support the API
+        gameStatusEl.textContent = "Sorry, your browser doesn't support speech recognition.";
+        startButton.disabled = true;
+    }
+
+    // --- GAME STATE ---
+    let timerInterval;
+    let score = 0;
+    let totalWordsUsed = 0;
+    let wordsToGuess = [];
+    let passedWords = [];
+    let currentWord = '';
+    let isGameActive = false;
+
+    // --- UI FUNCTIONS ---
+    function showScreen(screenName) {
+        Object.values(screens).forEach(screen => screen.classList.remove('active'));
+        screens[screenName].classList.add('active');
+    }
+
+    function updateUI() {
+        scoreEl.textContent = `${score}/${WORDS_PER_ROUND}`;
+        timerEl.textContent = GAME_TIME_S;
+        wordCountEl.textContent = 0;
+        wordCountEl.classList.remove('limit-reached');
+    }
+
+    // --- GAME LOGIC ---
+    function init() {
+        score = 0;
+        totalWordsUsed = 0;
+        passedWords = [];
+        isGameActive = false;
+        clearInterval(timerInterval);
+
+        // Shuffle and pick words
+        wordsToGuess = WORD_LIST.sort(() => 0.5 - Math.random()).slice(0, WORDS_PER_ROUND);
+
+        updateUI();
+        showScreen('start');
+    }
+
+    function startGame() {
+        isGameActive = true;
+        showScreen('game');
+        startTimer();
+        startListening();
+        nextWord();
+    }
+
+    function endGame() {
+        if (!isGameActive) return; // Prevent multiple calls
+        isGameActive = false;
+        
+        clearInterval(timerInterval);
+        if(recognition) recognition.stop();
+
+        finalScoreEl.textContent = `${score}/${WORDS_PER_ROUND}`;
+        finalWordCountEl.textContent = totalWordsUsed;
+        
+        showScreen('end');
+    }
+
+
+    function nextWord() {
+        secretWordEl.style.animation = 'none'; // Reset animation
+        void secretWordEl.offsetWidth; // Trigger reflow
+        secretWordEl.style.animation = 'fadeIn 0.5s ease'; // Re-apply animation
+
+        if (wordsToGuess.length > 0) {
+            currentWord = wordsToGuess.shift();
+        } else if (passedWords.length > 0) {
+            // Cycle through passed words
+            gameStatusEl.textContent = "Let's try the passed words!";
+            wordsToGuess = passedWords;
+            passedWords = [];
+            currentWord = wordsToGuess.shift();
+        } else {
+            // All words have been guessed
+            gameStatusEl.textContent = "You got them all! Waiting for timer...";
+            secretWordEl.textContent = "🎉";
+            correctButton.disabled = true;
+            passButton.disabled = true;
+            return;
+        }
+        secretWordEl.textContent = currentWord;
+    }
+
+    function handleCorrect() {
+        if (!isGameActive) return;
+        score++;
+        scoreEl.textContent = `${score}/${WORDS_PER_ROUND}`;
+        nextWord();
+    }
+
+    function handlePass() {
+        if (!isGameActive) return;
+        // Don't pass if it's the last word and we've already cycled
+        if (wordsToGuess.length > 0 || passedWords.length > 0) {
+            passedWords.push(currentWord);
+            nextWord();
+        }
+    }
+
+    function startTimer() {
+        let timeLeft = GAME_TIME_S;
+        timerEl.textContent = timeLeft;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerEl.textContent = timeLeft;
+            if (timeLeft <= 10) {
+                timerEl.style.color = 'var(--timer-alert)';
+            }
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
+    }
+
+    // --- SPEECH RECOGNITION LOGIC ---
+    function startListening() {
+        if (!recognition) return;
+        totalWordsUsed = 0;
+        wordCountEl.textContent = 0;
+
+        recognition.onresult = (event) => {
+            if (!isGameActive) return;
+
+            let transcript = '';
+            for (const result of event.results) {
+                transcript += result[0].transcript;
+            }
+
+            // Count words and update UI
+            totalWordsUsed = transcript.trim().split(/\s+/).filter(Boolean).length;
+            wordCountEl.textContent = totalWordsUsed;
+
+            if (totalWordsUsed >= MAX_WORDS) {
+                wordCountEl.classList.add('limit-reached');
+                gameStatusEl.textContent = "Word limit reached!";
+                recognition.stop();
+            }
+        };
+        
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error);
+            gameStatusEl.textContent = `Error: ${event.error}`;
+        }
+        
+        recognition.onend = () => {
+            // Restart listening if the game is still active and we haven't hit the word limit
+            if (isGameActive && totalWordsUsed < MAX_WORDS) {
+                recognition.start();
+            }
+        }
+        
+        recognition.start();
+    }
+
+
+    // --- EVENT LISTENERS ---
+    startButton.addEventListener('click', startGame);
+    correctButton.addEventListener('click', handleCorrect);
+    passButton.addEventListener('click', handlePass);
+    playAgainButton.addEventListener('click', init);
+
+    // --- INITIALIZE GAME ---
+    init();
+});
+</script>
+
+</body>
+</html>
