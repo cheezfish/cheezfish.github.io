@@ -101,6 +101,12 @@
             color: #333;
         }
         #passButton:hover { background-color: #e0a800; }
+        #listenButton {
+            background-color: #007BFF;
+            color: white;
+            flex: 1;
+        }
+        #listenButton:hover { background-color: #0056b3; }
         .info-text {
             font-size: 1.2em;
             margin-top: 20px;
@@ -133,6 +139,9 @@
             <button id="correctButton" class="btn">Correct</button>
             <button id="passButton" class="btn">Pass</button>
         </div>
+        <div class="extra-buttons" style="margin-top: 15px;">
+            <button id="listenButton" class="btn">Start Listening</button>
+        </div>
         <div class="info-text">
             Guesser must announce when they get a word right. Clue Giver presses "Correct".
         </div>
@@ -163,6 +172,7 @@
         let passedWords = [];
         let correctWordsCount = 0;
         let speechRecognition = null;
+        let isListening = false;
 
         // --- DOM Elements ---
         const introScreen = document.getElementById('introScreen');
@@ -170,6 +180,7 @@
         const startButton = document.getElementById('startButton');
         const correctButton = document.getElementById('correctButton');
         const passButton = document.getElementById('passButton');
+        const listenButton = document.getElementById('listenButton');
         const timerDisplay = document.getElementById('timer');
         const wordCountDisplay = document.getElementById('wordCount');
         const currentWordDisplay = document.getElementById('currentWord');
@@ -180,8 +191,10 @@
         startButton.addEventListener('click', startRound);
         correctButton.addEventListener('click', handleCorrect);
         passButton.addEventListener('click', handlePass);
+        listenButton.addEventListener('click', toggleListening);
 
         // --- Game Functions ---
+
         function startRound() {
             // Reset state for a new round
             roundTimeLeft = ROUND_TIME;
@@ -202,8 +215,7 @@
             introScreen.style.display = 'none';
             gameScreen.style.display = 'flex';
 
-            // Start listening and game loop
-            startListening();
+            // Start game loop
             nextWord();
             startTimer();
         }
@@ -243,9 +255,11 @@
             correctWordsCount++;
             roundScoreDisplay.textContent = correctWordsCount;
 
-            // Stop and restart listening to clear the buffer
+            // Stop listening temporarily to avoid counting button press
             stopListening();
-            setTimeout(startListening, 500);
+            setTimeout(() => {
+                if (isListening) startListening();
+            }, 500);
 
             // Check if all words are guessed
             if (correctWordsCount >= NUM_WORDS_PER_ROUND) {
@@ -260,9 +274,11 @@
             if (currentWordIndex !== -1 && !passedWords.includes(wordsForRound[currentWordIndex])) {
                 passedWords.push(wordsForRound[currentWordIndex]);
             }
-            // Stop and restart listening to clear the buffer
+            // Stop listening temporarily to avoid counting button press
             stopListening();
-            setTimeout(startListening, 500);
+            setTimeout(() => {
+                if (isListening) startListening();
+            }, 500);
 
             nextWord();
         }
@@ -317,32 +333,40 @@
                 };
 
                 speechRecognition.onend = () => {
-                    // Automatically restart if not at the end of a round
-                    if (roundTimeLeft > 0) {
-                         speechRecognition.start();
+                    if (isListening) {
+                        speechRecognition.start();
                     }
                 };
             } else {
-                alert("Speech recognition is not supported in this browser. Please use a modern browser like Chrome.");
+                listenButton.disabled = true;
+                listenButton.textContent = 'Speech not supported';
             }
         }
 
         function startListening() {
-            if (speechRecognition) {
-                try {
-                    speechRecognition.start();
-                } catch (e) {
-                    console.error("Speech Recognition already started:", e);
-                }
+            if (speechRecognition && !isListening) {
+                isListening = true;
+                listenButton.textContent = 'Stop Listening';
+                speechRecognition.start();
             }
         }
 
         function stopListening() {
-            if (speechRecognition) {
+            if (speechRecognition && isListening) {
+                isListening = false;
+                listenButton.textContent = 'Start Listening';
                 speechRecognition.stop();
             }
         }
         
+        function toggleListening() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
         // A utility function to shuffle an array
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
