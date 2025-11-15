@@ -481,36 +481,50 @@
 
     // REPLACE your existing startProductTour function with this one.
     
-   function startProductTour() {
+    function startProductTour() {
+        console.log('startProductTour called');
+        console.log('window.driver type:', typeof window.driver);
+        console.log('window object keys:', Object.keys(window).filter(k => k.toLowerCase().includes('driver')));
+        
         let attempts = 0;
         const maxAttempts = 30; // Try for 3 seconds (30 * 100ms)
 
         const interval = setInterval(() => {
             attempts++;
+            console.log(`Attempt ${attempts}: window.driver =`, typeof window.driver);
 
             // Check if the global `driver` function from the CDN script exists.
             if (typeof window.driver === 'function') {
                 clearInterval(interval); // Stop checking, library is ready.
+                console.log('Driver.js loaded successfully!');
 
-                const driverObj = window.driver({
-                    showProgress: true,
-                    steps: [
-                        { element: '.theme-selector-container', popover: { title: 'Step 1: Choose Your Theme', description: 'Select a visual theme for your wedding website and invitations.' } },
-                        { element: '#wedding-details-form', popover: { title: 'Step 2: Enter Your Details', description: 'Fill in all the core details about your wedding. Remember to save!' } },
-                        { element: '#save-settings-button', popover: { title: 'Save Your Progress', description: 'Click this any time you make changes to save them.' } },
-                        { element: '#add-group-form', popover: { title: 'Step 3: Add Guest Groups', description: 'Add your guest groups or families here. Each group gets one unique invitation code.' } },
-                        { element: '#preview-website-button', popover: { title: 'Step 4: Preview Your Work', description: 'Use these buttons to generate a live preview of your website or an invitation.' } },
-                        { element: '#generate-invites-button', popover: { title: 'Step 5: Generate Everything!', description: 'When you are happy with your previews, click this to generate all the final files.' } }
-                    ],
-                    onClose: () => {
-                        localStorage.setItem('weddingStackTourCompleted', 'true');
-                    }
-                });
+                try {
+                    const driverObj = window.driver({
+                        showProgress: true,
+                        steps: [
+                            { element: '.theme-selector-container', popover: { title: 'Step 1: Choose Your Theme', description: 'Select a visual theme for your wedding website and invitations.' } },
+                            { element: '#wedding-details-form', popover: { title: 'Step 2: Enter Your Details', description: 'Fill in all the core details about your wedding. Remember to save!' } },
+                            { element: '#save-settings-button', popover: { title: 'Save Your Progress', description: 'Click this any time you make changes to save them.' } },
+                            { element: '#add-group-form', popover: { title: 'Step 3: Add Guest Groups', description: 'Add your guest groups or families here. Each group gets one unique invitation code.' } },
+                            { element: '#preview-website-button', popover: { title: 'Step 4: Preview Your Work', description: 'Use these buttons to generate a live preview of your website or an invitation.' } },
+                            { element: '#generate-invites-button', popover: { title: 'Step 5: Generate Everything!', description: 'When you are happy with your previews, click this to generate all the final files.' } }
+                        ],
+                        onClose: () => {
+                            localStorage.setItem('weddingStackTourCompleted', 'true');
+                        }
+                    });
 
-                driverObj.drive();
+                    console.log('Driver object created:', driverObj);
+                    driverObj.drive();
+                    console.log('Tour started');
+                } catch (error) {
+                    console.error('Error starting tour:', error);
+                }
             } else if (attempts >= maxAttempts) {
                 clearInterval(interval); // Stop trying.
-                console.error("Driver.js did not load within 3 seconds. The tour cannot start. This might be due to a network issue or a script blocker.");
+                console.error("Driver.js did not load within 3 seconds. The tour cannot start.");
+                console.error("Final check - window.driver:", window.driver);
+                console.error("All scripts loaded:", Array.from(document.scripts).map(s => s.src));
             }
         }, 100);
     }
