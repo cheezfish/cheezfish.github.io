@@ -479,8 +479,11 @@
     // --- PRODUCT TOUR (DRIVER.JS) ---
     // =================================================================================
 
+    // REPLACE your existing startProductTour function with this one.
     function startProductTour() {
-        const driver = window.driver.js.driver;
+        // --- THIS IS THE FIX ---
+        // The new driver.js v1 creates a single function on the window object.
+        const driver = window.driver;
 
         const driverObj = driver({
             showProgress: true,
@@ -527,13 +530,15 @@
                         description: 'When you are completely happy with your settings and previews, click this button to generate all the final invitation files in your Google Drive.' 
                     } 
                 }
-            ]
+            ],
+            // This is a new required callback for when the tour is closed.
+            onClose: () => {
+                // After the tour is finished or closed, mark it as completed for this user.
+                localStorage.setItem('weddingStackTourCompleted', 'true');
+            }
         });
 
         driverObj.drive();
-
-        // After the tour is finished, mark it as completed for this user.
-        localStorage.setItem('weddingStackTourCompleted', 'true');
     }
 
     // =================================================================================
