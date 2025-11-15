@@ -425,8 +425,8 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js"></script>
 
+    <script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.iife.js"></script>
     <script>
     // =================================================================================
     // --- CONFIGURATION ---
@@ -482,13 +482,16 @@
     // REPLACE your existing startProductTour function with this one.
     
    function startProductTour() {
-        // This function waits until the driver.js library has loaded and created the global `driver` function.
-        const interval = setInterval(() => {
-            // THE FIX, PART 1: Check if `window.driver` exists AND is a function.
-            if (typeof window.driver === 'function') {
-                clearInterval(interval); // Stop checking, the library is ready.
+        let attempts = 0;
+        const maxAttempts = 30; // Try for 3 seconds (30 * 100ms)
 
-                // THE FIX, PART 2: Call the function using the EXACT syntax from the documentation.
+        const interval = setInterval(() => {
+            attempts++;
+
+            // Check if the global `driver` function from the CDN script exists.
+            if (typeof window.driver === 'function') {
+                clearInterval(interval); // Stop checking, library is ready.
+
                 const driverObj = window.driver({
                     showProgress: true,
                     steps: [
@@ -504,10 +507,12 @@
                     }
                 });
 
-                // Start the tour.
                 driverObj.drive();
+            } else if (attempts >= maxAttempts) {
+                clearInterval(interval); // Stop trying.
+                console.error("Driver.js did not load within 3 seconds. The tour cannot start. This might be due to a network issue or a script blocker.");
             }
-        }, 100); // Check every 100 milliseconds.
+        }, 100);
     }
 
     // =================================================================================
