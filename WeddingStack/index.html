@@ -365,6 +365,7 @@
     const UPLOAD_IMAGE_WEBHOOK_URL = `${API_BASE_PATH}/upload-image`;
     const PREVIEW_WEBSITE_WEBHOOK_URL = `${API_BASE_PATH}/preview-website`;
     const PREVIEW_INVITATION_WEBHOOK_URL = `${API_BASE_PATH}/preview-invitation`;
+    const DELETE_GROUP_WEBHOOK_URL = `${API_BASE_PATH}/delete-group`; // Add this line
 
     // This new function securely loads the Google Maps script
     async function loadGoogleMapsScript() {
@@ -548,6 +549,7 @@
     // =================================================================================
     // --- UI RENDERING & EVENT HANDLERS ---
     // =================================================================================
+    // REPLACE your existing renderGroups function with this one
     function renderGroups(groups) {
         const groupListContainer = document.getElementById('group-list-container');
         groupListContainer.innerHTML = '';
@@ -561,8 +563,18 @@
             const groupName = group['Group Name'];
             const recipient = group['Invitation Recipient'];
             const count = group['Number of Invites Allocated'];
+            const rowNumber = group.row_number; // Get the row number
             const spotsText = parseInt(count, 10) === 1 ? 'spot' : 'spots';
-            card.innerHTML = `<div class="card-header"><h3 class="card-title">${groupName}</h3><span class="card-spots">${count} ${spotsText}</span></div><p class="card-recipient">Primary Contact: ${recipient}</p>`;
+            
+            // Add the delete button with the row number embedded as a data attribute
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title">${groupName}</h3>
+                    <button class="remove-item-btn delete-group-btn" data-row-number="${rowNumber}" title="Delete Group">&times;</button>
+                </div>
+                <p class="card-recipient">Primary Contact: ${recipient}</p>
+                <span class="card-spots">${count} ${spotsText}</span>
+            `;
             groupListContainer.appendChild(card);
         });
     }
@@ -609,6 +621,19 @@
         // **FIX**: The event listeners for the preview buttons are now correctly defined here
         document.getElementById('preview-website-button').addEventListener('click', previewWebsite);
         document.getElementById('preview-invitation-button').addEventListener('click', previewInvitation);
+
+        document.getElementById('group-list-container').addEventListener('click', (event) => {
+        // Check if a delete button was clicked
+        if (event.target.classList.contains('delete-group-btn')) {
+            const rowNumber = event.target.dataset.rowNumber;
+            if (rowNumber) {
+                // Ask for confirmation before deleting
+                if (confirm('Are you sure you want to delete this group? This cannot be undone.')) {
+                    deleteGroup(rowNumber);
+                }
+            }
+        }
+    });
     }
 
     // --- All event handler functions are now separate ---
@@ -649,6 +674,43 @@
             settingsMessageEl.textContent = 'An error occurred. Please try again.';
             settingsMessageEl.classList.add('error');
             console.error('Error saving settings:', error);
+        }
+    }
+
+    async function deleteGroup(rowNumber) {
+        const addGroupMessageEl = document.getElementById('add-group-message');
+        if (!userSheetId) { 
+            addGroupMessageEl.textContent = "Please log in first."; 
+            return; 
+        }
+
+        addGroupMessageEl.textContent = 'Deleting group...';
+        addGroupMessageEl.className = 'message';
+
+        try {
+            const response = await fetch(DELETE_GROUP_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    sheetId: userSheetId,
+                    rowNumber: rowNumber 
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+
+            addGroupMessageEl.textContent = 'Group deleted successfully. Refreshing list...';
+            addGroupMessageEl.classList.add('success');
+
+            // Refresh the group list to show the change
+            await fetchAndDisplayGroups();
+
+        } catch (error) {
+            addGroupMessageEl.textContent = 'Failed to delete group.';
+            addGroupMessageEl.classList.add('error');
+            console.error('Error deleting group:', error);
         }
     }
 
