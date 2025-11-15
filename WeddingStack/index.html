@@ -45,7 +45,7 @@
         }
         .header-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 5.5rem;
+            font-size: clamp(3.5rem, 12vw, 5.5rem);
             font-weight: 300;
             color: var(--gold);
             letter-spacing: 0.1em;
@@ -229,6 +229,10 @@
             text-align: center;
             padding: 6rem 2rem;
         }
+        /* ADD THIS NEW RULE right after the #login-view rule */
+        #login-view .g_id_signin {
+            display: inline-block; /* This allows the button's container to be centered */
+        }
         #login-view .section-description { max-width: 45ch; margin-left: auto; margin-right: auto; }
         #main-content {
             display: none;
@@ -337,7 +341,7 @@
                             <label>Hero Image</label>
                             <div class="image-uploader">
                                 <div id="hero-image-preview" class="image-preview"></div>
-                                <label for="hero-image-upload" class="image-uploader-label">Choose File</label>
+                                <label for="hero-image-upload" class="image-uploader-label">Upload primary image</label>
                                 <input type="file" id="hero-image-upload" accept="image/*" required>
                                 <input type="hidden" id="hero-image-url">
                                 <p id="hero-image-message" class="message"></p>
@@ -347,7 +351,7 @@
                             <label>CTA Image</label>
                             <div class="image-uploader">
                                 <div id="cta-image-preview" class="image-preview"></div>
-                                <label for="cta-image-upload" class="image-uploader-label">Choose File</label>
+                                <label for="cta-image-upload" class="image-uploader-label">Upload secondary image</label>
                                 <input type="file" id="cta-image-upload" accept="image/*" required>
                                 <input type="hidden" id="cta-image-url">
                                 <p id="cta-image-message" class="message"></p>
@@ -355,7 +359,7 @@
                         </div>
                         <div class="form-group"><label for="gift-registry-url">Gift Registry URL</label><input type="text" id="gift-registry-url" required></div>
                         <div class="form-group"><label for="gift-registry-btn-text">Gift Button Text</label><input type="text" id="gift-registry-btn-text" placeholder="e.g., Contribute to our Honeymoon" required></div>
-                        <div class="form-group full-width"><label for="gift-policy-text">Gift Policy Text (Optional)</label><textarea id="gift-policy-text" placeholder="Leave blank for default text"></textarea></div>
+                        <div class="form-group full-width"><label for="gift-policy-text">Gift Policy Text</label><textarea id="gift-policy-text" placeholder="Leave blank for default text"></textarea></div>
                     </div>
                     <button id="save-settings-button" class="action-button primary-action" style="margin-top: 2rem;">Save Details</button>
                     <p id="settings-message" class="message"></p>
@@ -377,7 +381,7 @@
             <div class="section">
                 <h2 class="section-title">Step 4: Preview Invitations & Website</h2>
                 <p class="section-description">
-                    Click the button to generate a live preview of your wedding website. The preview will appear below. 
+                    Click these buttons to generate a live preview of your wedding website and invitations. The preview will appear below. 
                     Note: The RSVP form in the preview will not work correctly, this is for visual preview only.
                 </p>
                 <button id="preview-website-button" class="action-button">Website</button>
@@ -391,8 +395,8 @@
 
             <div class="section">
                 <h2 class="section-title">Step 5: Generate Invitations & Website</h2>
-                <p class="section-description">Click this button to trigger the n8n workflow. It will use the **saved details** to generate personalized invitations for all the groups.</p>
-                <button id="generate-invites-button" class="action-button primary-action">Generate Invitations</button>
+                <p class="section-description">When you're done with everything and happy with the samples, click this button.It will use the **saved details** to generate your wedding website and personalized invitations for all the groups.</p>
+                <button id="generate-invites-button" class="action-button primary-action">Generate Website & Invitations</button>
                 <p id="generate-invites-message" class="message"></p>
             </div>
 
