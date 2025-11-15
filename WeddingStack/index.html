@@ -481,11 +481,9 @@
 
     // REPLACE your existing startProductTour function with this one.
     function startProductTour() {
-        // --- THIS IS THE FIX ---
-        // The new driver.js v1 creates a single function on the window object.
-        const driver = window.driver;
-
-        const driverObj = driver({
+        // This is the definitive fix for the "driver is not a function" error.
+        // We call the .driver() method on the window.driver object.
+        const driverObj = window.driver.driver({
             showProgress: true,
             steps: [
                 { 
@@ -531,7 +529,6 @@
                     } 
                 }
             ],
-            // This is a new required callback for when the tour is closed.
             onClose: () => {
                 // After the tour is finished or closed, mark it as completed for this user.
                 localStorage.setItem('weddingStackTourCompleted', 'true');
