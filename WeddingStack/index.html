@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding · Setup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0D1117; --ink-rgb: 13, 17, 23;
+            --charcoal: #161B22; --charcoal-rgb: 22, 27, 34;
+            --slate: #21262D; --slate-rgb: 33, 38, 45;
+            --smoke: #8B949E;
+            --pearl: #C9D1D9; --pearl-rgb: 201, 209, 217;
+            --ivory: #F0F6FC;
+            --gold: #D4A574; --gold-rgb: 212, 165, 116;
+            --accent: #7C8DB5;
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+        }
+        body.theme-royal-navy { --ink: #0a192f; --ink-rgb: 10, 25, 47; --charcoal: #172a45; --charcoal-rgb: 23, 42, 69; --slate: #303C55; --slate-rgb: 48, 60, 85; --smoke: #8892b0; --pearl: #ccd6f6; --pearl-rgb: 204, 214, 246; --ivory: #e6f1ff; --gold: #FFD700; --gold-rgb: 255, 215, 0; --accent: #64ffda; }
+        body.theme-enchanted-forest { --ink: #023430; --ink-rgb: 2, 52, 48; --charcoal: #00474B; --charcoal-rgb: 0, 71, 75; --slate: #005F54; --slate-rgb: 0, 95, 84; --smoke: #93A195; --pearl: #C2C5C1; --pearl-rgb: 194, 197, 193; --ivory: #E0E2E0; --gold: #DAA520; --gold-rgb: 218, 165, 32; --accent: #A0522D; }
+        body.theme-crimson-pearl { --ink: #2B0000; --ink-rgb: 43, 0, 0; --charcoal: #4A0000; --charcoal-rgb: 74, 0, 0; --slate: #600000; --slate-rgb: 96, 0, 0; --smoke: #D3D3D3; --pearl: #F5F5DC; --pearl-rgb: 245, 245, 220; --ivory: #FFFFFF; --gold: #C0C0C0; --gold-rgb: 192, 192, 192; --accent: #FFC0CB; }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--ink);
+            background-image: radial-gradient(ellipse at top, var(--slate), var(--ink) 80%);
+            color: var(--pearl);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 4rem 2rem; }
+        header {
+            text-align: center;
+            padding-bottom: 2rem;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(var(--gold-rgb), 0.1);
+        }
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5.5rem;
+            font-weight: 300;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 15px rgba(var(--gold-rgb), 0.3);
+        }
+        .header-subtitle { font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--smoke); font-weight: 300; opacity: 0.8; }
+
+        .section {
+            background: rgba(var(--charcoal-rgb), 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(var(--pearl-rgb), 0.05);
+            border-top: 1px solid rgba(var(--pearl-rgb), 0.1);
+            border-radius: var(--border-radius-md);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: var(--ivory);
+            letter-spacing: 0.01em;
+        }
+        .section-description { color: var(--smoke); margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.8; font-weight: 300; max-width: 70ch; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { display: block; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--smoke); margin-bottom: 0.8rem; font-weight: 400; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: var(--ink);
+            border: 1px solid var(--slate);
+            color: var(--pearl);
+            padding: 0.8rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            border-radius: var(--border-radius-sm);
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: var(--charcoal);
+            box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.2);
+        }
+        .action-button {
+            display: inline-block;
+            padding: 0rem 1.5rem;
+            border: 1px solid var(--gold);
+            border-radius: var(--border-radius-sm);
+            color: var(--ivory);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 400;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+        .action-button:hover {
+            background: var(--gold);
+            color: var(--ink);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.3);
+        }
+        .message { margin-top: 1.5rem; min-height: 1.5em; font-size: 0.9rem; font-weight: 300; letter-spacing: 0.05em; transition: color 0.3s ease; }
+        .message.success { color: var(--accent); }
+        .message.error { color: #e57373; }
+        .theme-selector-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .theme-option {
+            border: 2px solid transparent;
+            background: var(--slate);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .theme-option:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .theme-option.selected { border-color: var(--gold); }
+        .theme-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--ivory); margin-bottom: 1rem; }
+        .theme-swatches { display: flex; justify-content: center; gap: 0.5rem; }
+        .swatch { width: 25px; height: 25px; border-radius: 50%; border: 2px solid rgba(var(--pearl-rgb), 0.2); }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--slate); transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: var(--ivory); transition: .4s; border-radius: 50%; }
+        .toggle-group-container { display: flex; gap: 4rem; align-items: center; flex-wrap: wrap; }
+        .toggle-item { display: flex; flex-direction: column; align-items: flex-start; }
+        .toggle-item label:first-child { margin-bottom: 0.8rem; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:focus + .slider { box-shadow: 0 0 1px var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .timeline-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+        .timeline-item input[type="time"] { flex-basis: 120px; }
+        .timeline-item input[type="text"] { flex-grow: 1; }
+        .remove-item-btn { background: none; border: none; color: #b57c7c; font-size: 1.5rem; cursor: pointer; padding: 0 0.5rem; transition: color 0.2s ease; }
+        .remove-item-btn:hover { color: #e57373; }
+        .image-uploader { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        .image-preview { width: 150px; height: 100px; background-color: var(--ink); border: 2px dashed var(--slate); background-size: cover; background-position: center; border-radius: var(--border-radius-sm); }
+        .image-uploader-label { display: inline-block; padding: 0.8rem 1.5rem; border: 1px solid var(--gold); color: var(--ivory); cursor: pointer; transition: all 0.3s ease; border-radius: var(--border-radius-sm); }
+        .image-uploader-label:hover { background: var(--gold); color: var(--ink); }
+        .image-uploader input[type="file"] { display: none; }
+        .group-list-container { margin-top: 3rem; border-top: 1px solid rgba(var(--gold-rgb), 0.1); padding-top: 2rem; }
+        .status-message { text-align: center; color: var(--smoke); font-style: italic; padding: 2rem 0; }
+        .group-card {
+            background: var(--slate);
+            border: 1px solid rgba(var(--pearl-rgb), 0.05);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .group-card:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; color: var(--ivory); margin: 0; }
+        .card-spots { background: var(--charcoal); color: var(--gold); font-size: 0.75rem; font-weight: 500; padding: 0.3rem 0.8rem; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .card-recipient { color: var(--smoke); font-size: 1.2rem; margin: 0; }
+        
+        #login-view {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        #login-view .section-description { max-width: 45ch; margin-left: auto; margin-right: auto; }
+        #main-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <div class="container">
+
+        <div id="login-view">
+            <header>
+                <div class="header-title">WeddingStack</div>
+                <div class="header-subtitle">Invitation Management</div>
+            </header>
+            <p class="section-description">Please sign in with your Google Account to manage your wedding details.</p>
+            <div id="g_id_onload"
+                 data-client_id="404764581064-9h66nci1i8v1dc62kllg27gn1i4of3tl.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>
+            <p id="login-message" class="message"></p>
+        </div>
+
+        <main id="main-content">
+            <header>
+                <div id="user-header-title" class="header-title"></div>
+                <div class="header-subtitle">Invitation Management</div>
+            </header>
+
+            <div class="section">
+                <h2 class="section-title">Step 1: Select a Theme</h2>
+                <div class="theme-selector-container">
+                    <div class="theme-option selected" data-theme="midnight-gold"><h3 class="theme-title">Midnight Gold</h3><div class="theme-swatches"><div class="swatch" style="background-color: #0D1117;"></div><div class="swatch" style="background-color: #161B22;"></div><div class="swatch" style="background-color: #D4A574;"></div><div class="swatch" style="background-color: #C9D1D9;"></div></div></div>
+                    <div class="theme-option" data-theme="royal-navy"><h3 class="theme-title">Royal Navy</h3><div class="theme-swatches"><div class="swatch" style="background-color: #0a192f;"></div><div class="swatch" style="background-color: #172a45;"></div><div class="swatch" style="background-color: #FFD700;"></div><div class="swatch" style="background-color: #ccd6f6;"></div></div></div>
+                    <div class="theme-option" data-theme="enchanted-forest"><h3 class="theme-title">Enchanted Forest</h3><div class="theme-swatches"><div class="swatch" style="background-color: #023430;"></div><div class="swatch" style="background-color: #00474B;"></div><div class="swatch" style="background-color: #DAA520;"></div><div class="swatch" style="background-color: #E0E2E0;"></div></div></div>
+                    <div class="theme-option" data-theme="crimson-pearl"><h3 class="theme-title">Crimson & Pearl</h3><div class="theme-swatches"><div class="swatch" style="background-color: #2B0000;"></div><div class="swatch" style="background-color: #600000;"></div><div class="swatch" style="background-color: #C0C0C0;"></div><div class="swatch" style="background-color: #F5F5DC;"></div></div></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Step 2: Configure & Save Details</h2>
+                <form id="wedding-details-form" onsubmit="return false;">
+                    <h3 class="section-title" style="font-size: 1.8rem; margin-bottom: 2rem;">Core Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="partner1-name">Partner 1 Name</label><input type="text" id="partner1-name" required></div>
+                        <div class="form-group"><label for="partner2-name">Partner 2 Name</label><input type="text" id="partner2-name" required></div>
+                        <div class="form-group"><label for="wedding-date">Wedding Date</label><input type="date" id="wedding-date" required></div>
+                        <div class="form-group"><label for="wedding-time">Wedding Time</label><input type="time" id="wedding-time" required></div>
+                    </div>
+                    <h3 class="section-title" style="font-size: 1.8rem; margin-top: 3rem; margin-bottom: 2rem;">Venue & Logistics</h3>
+                    <!-- ADD THIS NEW SEARCH FIELD -->
+                    <div class="form-group full-width">
+                        <label for="venue-search">Search for Venue</label>
+                        <input type="text" id="venue-search" placeholder="Start typing your venue name or address...">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="venue-name">Venue Name</label><input type="text" id="venue-name" required></div>
+                        <div class="form-group"><label for="google-maps-url">Google Maps URL</label><input type="text" id="google-maps-url" required></div>
+                        <div class="form-group"><label for="arrival-time">Arrival Time</label><input type="time" id="arrival-time" required></div>
+                        <div class="form-group full-width">
+                            <div class="toggle-group-container">
+                                <div class="toggle-item">
+                                    <label>On-Site Parking</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="parking-info">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-item">
+                                    <label>Wheelchair Accessible</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="accessibility-info">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Schedule</label>
+                            <div id="timeline-builder-container"></div>
+                            <button type="button" id="add-timeline-item" class="action-button" style="padding: 0.5rem 1.5rem; font-size: 0.8rem; margin-top: 1rem;">+ Add Item</button>
+                        </div>
+                    </div>
+                    <h3 class="section-title" style="font-size: 1.8rem; margin-top: 3rem; margin-bottom: 2rem;">Guest Experience</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="dress-code-title">Dress Code Title</label><input type="text" id="dress-code-title" value="Formal Attire" required></div>
+                        <div class="form-group"><label for="dress-code-desc">Dress Code Description</label><input type="text" id="dress-code-desc" value="Formal or black-tie optional attire is requested." required></div>
+                        <div class="form-group"><label for="hashtag">Hashtag (without #)</label><input type="text" id="hashtag" required></div>
+                        <div class="form-group"><label for="google-photos-url">Google Photos Album URL</label><input type="text" id="google-photos-url" required></div>
+                        <div class="form-group full-width"><label for="our-story-text">Our Story Text (Optional)</label><textarea id="our-story-text" placeholder="A short description of your love story, for the website."></textarea></div>
+                    </div>
+                    <h3 class="section-title" style="font-size: 1.8rem; margin-top: 3rem; margin-bottom: 2rem;">Website & Gifting</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="website-url">Website URL</label><input type="text" id="website-url" required></div>
+                        <div class="form-group"><label for="website-domain">Website Domain</label><input type="text" id="website-domain" required></div>
+                        <div class="form-group full-width">
+                            <label>Hero Image</label>
+                            <div class="image-uploader">
+                                <div id="hero-image-preview" class="image-preview"></div>
+                                <label for="hero-image-upload" class="image-uploader-label">Choose File</label>
+                                <input type="file" id="hero-image-upload" accept="image/*">
+                                <input type="hidden" id="hero-image-url">
+                                <p id="hero-image-message" class="message"></p>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>CTA Image</label>
+                            <div class="image-uploader">
+                                <div id="cta-image-preview" class="image-preview"></div>
+                                <label for="cta-image-upload" class="image-uploader-label">Choose File</label>
+                                <input type="file" id="cta-image-upload" accept="image/*">
+                                <input type="hidden" id="cta-image-url">
+                                <p id="cta-image-message" class="message"></p>
+                            </div>
+                        </div>
+                        <div class="form-group"><label for="gift-registry-url">Gift Registry URL</label><input type="text" id="gift-registry-url" required></div>
+                        <div class="form-group"><label for="gift-registry-btn-text">Gift Button Text</label><input type="text" id="gift-registry-btn-text" placeholder="e.g., Contribute to our Honeymoon" required></div>
+                        <div class="form-group full-width"><label for="gift-policy-text">Gift Policy Text (Optional)</label><textarea id="gift-policy-text" placeholder="Leave blank for default text"></textarea></div>
+                    </div>
+                    <button id="save-settings-button" class="action-button" style="margin-top: 2rem;">Save Details</button>
+                    <p id="settings-message" class="message"></p>
+                </form>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Step 3: Add Guest Groups</h2>
+                <form id="add-group-form">
+                    <div class="form-group"><label for="group-name">Group Name</label><input type="text" id="group-name" placeholder="e.g., The Smith Family" required></div>
+                    <div class="form-group"><label for="invitation-recipient">Invitation Recipient (Primary Contact)</label><input type="text" id="invitation-recipient" placeholder="e.g., John & Jane Smith" required></div>
+                    <div class="form-group"><label for="invite-count">Number of Invites Allocated</label><input type="number" id="invite-count" placeholder="e.g., 4" min="1" required></div>
+                    <button type="submit" class="action-button">Add Group</button>
+                    <p id="add-group-message" class="message"></p>
+                </form>
+                <div id="group-list-container" class="group-list-container"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Step 4: Preview Invitations & Website</h2>
+                <p class="section-description">
+                    Click the button to generate a live preview of your wedding website. The preview will appear below. 
+                    Note: The RSVP form in the preview will not work correctly, this is for visual preview only.
+                </p>
+                <button id="preview-website-button" class="action-button">Website</button>
+                <button id="preview-invitation-button" class="action-button" style="margin-right: 1rem;">Invitation</button>
+                <p id="preview-message" class="message"></p>
+
+                <div id="preview-container" style="margin-top: 3rem; border: 1px solid var(--slate); background: white; display: none;">
+                    <iframe id="preview-iframe" style="width: 100%; height: 800px; border: none;"></iframe>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Step 5: Generate Invitations & Website</h2>
+                <p class="section-description">Click this button to trigger the n8n workflow. It will use the **saved details** to generate personalized invitations for all the groups.</p>
+                <button id="generate-invites-button" class="action-button">Generate Invitations</button>
+                <p id="generate-invites-message" class="message"></p>
+            </div>
+
+            <!-- ... inside your <main> tag ... -->
+
+        </main>
+    </div>
+
+    <script>
+    // =================================================================================
+    // --- CONFIGURATION ---
+    // =================================================================================
+    // =================================================================================
+    // --- SECURE CONFIGURATION ---
+    // =================================================================================
+    const API_BASE_PATH = "/weddingstack/api"; // This is your new proxy route
+    const FIND_OR_CREATE_USER_WEBHOOK_URL = `${API_BASE_PATH}/find-or-create-user`;
+    const GET_SETTINGS_WEBHOOK_URL = `${API_BASE_PATH}/get-settings`;
+    const ADD_GROUP_WEBHOOK_URL = `${API_BASE_PATH}/add-group`;
+    const GENERATE_INVITES_WEBHOOK_URL = `${API_BASE_PATH}/generate-invites`;
+    const GET_GROUPS_WEBHOOK_URL = `${API_BASE_PATH}/get-groups`;
+    const SAVE_SETTINGS_WEBHOOK_URL = `${API_BASE_PATH}/save-settings`;
+    const UPLOAD_IMAGE_WEBHOOK_URL = `${API_BASE_PATH}/upload-image`;
+    const PREVIEW_WEBSITE_WEBHOOK_URL = `${API_BASE_PATH}/preview-website`;
+    const PREVIEW_INVITATION_WEBHOOK_URL = `${API_BASE_PATH}/preview-invitation`;
+
+    // This new function securely loads the Google Maps script
+    async function loadGoogleMapsScript() {
+        try {
+            // 1. Fetch the key from our secure worker endpoint
+            const response = await fetch(`${API_BASE_PATH}/get-maps-key`);
+            if (!response.ok) throw new Error('Could not fetch Maps API key.');
+            const apiKey = await response.text();
+
+            // 2. Create a new script tag in memory
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAutocomplete`;
+            script.async = true;
+            script.defer = true;
+            
+            // 3. Append the script to the document's head to execute it
+            document.head.appendChild(script);
+        } catch (error) {
+            console.error("Failed to load Google Maps:", error);
+        }
+    }
+
+    // =================================================================================
+    // --- GLOBAL STATE ---
+    // =================================================================================
+    let userSheetId = null;
+    let userFolderId = null;
+    let userName = '';
+    let selectedTheme = 'midnight-gold';
+
+    // =================================================================================
+    // --- CORE APP LOGIC ---
+    // =================================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        checkLoginState();
+    });
+
+    function checkLoginState() {
+        const storedUser = localStorage.getItem('weddingStackUser');
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            userSheetId = userData.sheetId;
+            userFolderId = userData.folderId;
+            userName = userData.name;
+
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+
+            const initials = userName.match(/\b\w/g) ? userName.match(/\b\w/g).join('') : '';
+            document.getElementById('user-header-title').textContent = initials;
+            
+            // Initialize event listeners now that we know the user is logged in
+            initializeEventListeners();
+
+            loadGoogleMapsScript();
+            
+            // Fetch initial data
+            getAndDisplaySettings(); 
+            fetchAndDisplayGroups();
+        }
+    }
+
+    async function handleCredentialResponse(response) {
+        const loginMessageEl = document.getElementById('login-message');
+        loginMessageEl.textContent = 'Verifying user...';
+        const decodedToken = JSON.parse(atob(response.credential.split('.')[1]));
+        const userData = { email: decodedToken.email, name: decodedToken.name };
+        try {
+            const res = await fetch(FIND_OR_CREATE_USER_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(userData)
+            });
+            if (!res.ok) throw new Error(`Server error: ${res.status}`);
+            const result = await res.json();
+            
+            const userToStore = { sheetId: result.sheetId, folderId: result.folderId, name: userData.name };
+            localStorage.setItem('weddingStackUser', JSON.stringify(userToStore));
+            
+            checkLoginState();
+        } catch (error) {
+            console.error("Error during user lookup:", error);
+            loginMessageEl.textContent = 'An error occurred during login. Please try again.';
+            loginMessageEl.classList.add('error');
+        }
+    }
+
+    // =================================================================================
+    // --- DATA FETCHING & UI POPULATION ---
+    // =================================================================================
+    async function getAndDisplaySettings() {
+        if (!userSheetId) return;
+        try {
+            const response = await fetch(`${GET_SETTINGS_WEBHOOK_URL}?sheetId=${userSheetId}`);
+            if (response.status === 404) { 
+                document.body.className = 'theme-midnight-gold';
+                renderTimeline(); 
+                return; 
+            }
+            if (!response.ok) throw new Error(`Network error: ${response.status}`);
+            const data = await response.json();
+            if (!data) { return; }
+
+            const settings = Array.isArray(data) ? data[0] : data;
+            if (!settings) { return; }
+
+            selectedTheme = settings.Theme || 'midnight-gold';
+            document.body.className = `theme-${selectedTheme}`;
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.theme === selectedTheme);
+            });
+            
+            // Safely populate form fields
+            const setValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = (value && !String(value).includes('{{')) ? value : '';
+            };
+            const setCheckbox = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = value === true || value === 'TRUE';
+            };
+
+            setValue('partner1-name', settings.Partner1Name);
+            setValue('partner2-name', settings.Partner2Name);
+            if (settings.DateTimeISO) {
+                const [datePart, timePart] = settings.DateTimeISO.split(' ');
+                setValue('wedding-date', datePart);
+                setValue('wedding-time', timePart ? timePart.substring(0, 5) : '');
+            }
+            setValue('venue-name', settings.VenueName);
+            setValue('google-maps-url', settings.GoogleMapsURL);
+            setValue('arrival-time', settings.ArrivalTime);
+            setCheckbox('parking-info', settings.ParkingInfo);
+            setCheckbox('accessibility-info', settings.AccessibilityInfo);
+            setValue('dress-code-title', settings.DressCodeTitle || 'Formal Attire');
+            setValue('dress-code-desc', settings.DressCodeDescription || 'Formal or black-tie optional attire is requested.');
+            setValue('hashtag', settings.Hashtag);
+            setValue('google-photos-url', settings.GooglePhotosURL);
+            setValue('our-story-text', settings.OurStoryText);
+            setValue('website-url', settings.WebsiteURL);
+            setValue('website-domain', settings.WebsiteDomain);
+            setValue('gift-registry-url', settings.GiftRegistryURL);
+            setValue('gift-registry-btn-text', settings.GiftRegistryButtonText);
+            setValue('gift-policy-text', settings.GiftPolicyText);
+
+            if (settings.HeroImageURL) {
+                setValue('hero-image-url', settings.HeroImageURL);
+                const heroPreview = document.getElementById('hero-image-preview');
+                if (heroPreview) heroPreview.style.backgroundImage = `url(${settings.HeroImageURL})`;
+            }
+            if (settings.CtaImageURL) {
+                setValue('cta-image-url', settings.CtaImageURL);
+                const ctaPreview = document.getElementById('cta-image-preview');
+                if (ctaPreview) ctaPreview.style.backgroundImage = `url(${settings.CtaImageURL})`;
+            }
+            let schedule = [];
+            if (settings.ScheduleText && settings.ScheduleText.startsWith('[')) {
+                try { schedule = JSON.parse(settings.ScheduleText); } catch (e) { console.warn('Could not parse schedule:', e); }
+            }
+            renderTimeline(schedule);
+        } catch (error) {
+            console.error("Could not fetch settings:", error);
+        }
+    }
+
+    async function fetchAndDisplayGroups() {
+        if (!userSheetId) return;
+        const groupListContainer = document.getElementById('group-list-container');
+        groupListContainer.innerHTML = `<p class="status-message">Loading groups...</p>`;
+        try {
+            const response = await fetch(`${GET_GROUPS_WEBHOOK_URL}?sheetId=${userSheetId}`);
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            const groups = await response.json();
+            renderGroups(groups);
+        } catch (error) {
+            groupListContainer.innerHTML = `<p class="status-message error">Could not load groups.</p>`;
+            console.error('Error fetching groups:', error);
+        }
+    }
+
+    // =================================================================================
+    // --- UI RENDERING & EVENT HANDLERS ---
+    // =================================================================================
+    function renderGroups(groups) {
+        const groupListContainer = document.getElementById('group-list-container');
+        groupListContainer.innerHTML = '';
+        if (!groups || groups.length === 0) {
+            groupListContainer.innerHTML = `<p class="status-message">No groups added yet.</p>`;
+            return;
+        }
+        groups.forEach(group => {
+            const card = document.createElement('div');
+            card.className = 'group-card';
+            const groupName = group['Group Name'];
+            const recipient = group['Invitation Recipient'];
+            const count = group['Number of Invites Allocated'];
+            const spotsText = parseInt(count, 10) === 1 ? 'spot' : 'spots';
+            card.innerHTML = `<div class="card-header"><h3 class="card-title">${groupName}</h3><span class="card-spots">${count} ${spotsText}</span></div><p class="card-recipient">Primary Contact: ${recipient}</p>`;
+            groupListContainer.appendChild(card);
+        });
+    }
+
+    function renderTimeline(schedule = []) {
+        const timelineContainer = document.getElementById('timeline-builder-container');
+        timelineContainer.innerHTML = '';
+        if (schedule && schedule.length > 0) {
+            schedule.forEach(item => createTimelineItem(item.time, item.event));
+        } else {
+            createTimelineItem('14:30', 'Guest Arrival');
+            createTimelineItem('15:00', 'Ceremony');
+            createTimelineItem('20:00', 'Dinner & Dancing');
+        }
+    }
+
+    function createTimelineItem(time = '', event = '') {
+        const timelineContainer = document.getElementById('timeline-builder-container');
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'timeline-item';
+        itemDiv.innerHTML = `<input type="time" class="timeline-time" value="${time}"><input type="text" class="timeline-event" placeholder="Event Description" value="${event}"><button type="button" class="remove-item-btn">&times;</button>`;
+        timelineContainer.appendChild(itemDiv);
+    }
+
+    // This function initializes all event listeners after the DOM is ready and user is logged in
+    function initializeEventListeners() {
+        document.getElementById('save-settings-button').addEventListener('click', saveSettings);
+        document.getElementById('add-group-form').addEventListener('submit', addGroup);
+        document.getElementById('generate-invites-button').addEventListener('click', generateAllInvites);
+        document.getElementById('hero-image-upload').addEventListener('change', (e) => handleImageUpload(e, 'HeroImageURL'));
+        document.getElementById('cta-image-upload').addEventListener('change', (e) => handleImageUpload(e, 'CtaImageURL'));
+        document.getElementById('add-timeline-item').addEventListener('click', () => createTimelineItem());
+        document.getElementById('timeline-builder-container').addEventListener('click', (e) => { 
+            if (e.target.classList.contains('remove-item-btn')) e.target.parentElement.remove(); 
+        });
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', () => {
+                selectedTheme = option.dataset.theme;
+                document.body.className = `theme-${selectedTheme}`;
+                document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+        // **FIX**: The event listeners for the preview buttons are now correctly defined here
+        document.getElementById('preview-website-button').addEventListener('click', previewWebsite);
+        document.getElementById('preview-invitation-button').addEventListener('click', previewInvitation);
+    }
+
+    // --- All event handler functions are now separate ---
+
+    async function saveSettings(event) {
+        event.preventDefault();
+        const settingsMessageEl = document.getElementById('settings-message');
+        if (!userSheetId) { settingsMessageEl.textContent = 'You must be logged in.'; return; }
+        settingsMessageEl.textContent = 'Saving details...';
+        const weddingDate = document.getElementById('wedding-date').value;
+        const weddingTime = document.getElementById('wedding-time').value;
+        const dateTimeISO = weddingDate && weddingTime ? `${weddingDate} ${weddingTime}:00` : '';
+        const timelineItems = [];
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            const time = item.querySelector('.timeline-time').value;
+            const event = item.querySelector('.timeline-event').value;
+            if (time && event) { timelineItems.push({ time, event }); }
+        });
+
+        const weddingDetails = {
+            sheetId: userSheetId, selectedTheme,
+            Partner1Name: document.getElementById('partner1-name').value, Partner2Name: document.getElementById('partner2-name').value,
+            DateTimeISO: dateTimeISO, VenueName: document.getElementById('venue-name').value, GoogleMapsURL: document.getElementById('google-maps-url').value,
+            ArrivalTime: document.getElementById('arrival-time').value, ParkingInfo: document.getElementById('parking-info').checked, AccessibilityInfo: document.getElementById('accessibility-info').checked,
+            ScheduleText: JSON.stringify(timelineItems), DressCodeTitle: document.getElementById('dress-code-title').value, DressCodeDescription: document.getElementById('dress-code-desc').value,
+            Hashtag: document.getElementById('hashtag').value, GooglePhotosURL: document.getElementById('google-photos-url').value, OurStoryText: document.getElementById('our-story-text').value,
+            WebsiteURL: document.getElementById('website-url').value, WebsiteDomain: document.getElementById('website-domain').value, HeroImageURL: document.getElementById('hero-image-url').value,
+            CtaImageURL: document.getElementById('cta-image-url').value, GiftRegistryURL: document.getElementById('gift-registry-url').value,
+            GiftRegistryButtonText: document.getElementById('gift-registry-btn-text').value, GiftPolicyText: document.getElementById('gift-policy-text').value
+        };
+
+        try {
+            const response = await fetch(SAVE_SETTINGS_WEBHOOK_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(weddingDetails) });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            settingsMessageEl.textContent = 'Success! Wedding details saved.';
+            settingsMessageEl.classList.add('success');
+        } catch (error) {
+            settingsMessageEl.textContent = 'An error occurred. Please try again.';
+            settingsMessageEl.classList.add('error');
+            console.error('Error saving settings:', error);
+        }
+    }
+
+    async function addGroup(event) {
+        event.preventDefault();
+        const addGroupMessageEl = document.getElementById('add-group-message');
+        if (!userSheetId) { addGroupMessageEl.textContent = "Please log in first."; return; }
+        const payload = { 
+            sheetId: userSheetId,
+            groupName: document.getElementById('group-name').value, 
+            invitationRecipient: document.getElementById('invitation-recipient').value, 
+            inviteCount: parseInt(document.getElementById('invite-count').value, 10) 
+        };
+        addGroupMessageEl.textContent = 'Adding group...';
+        try {
+            const response = await fetch(ADD_GROUP_WEBHOOK_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            document.getElementById('add-group-form').reset();
+            await fetchAndDisplayGroups();
+            addGroupMessageEl.textContent = 'Success! Group added.';
+            addGroupMessageEl.classList.add('success');
+        } catch (error) {
+            addGroupMessageEl.textContent = 'An error occurred.';
+            addGroupMessageEl.classList.add('error');
+            console.error('Error adding group:', error);
+        }
+    }
+
+    async function generateAllInvites() {
+        const generateMessageEl = document.getElementById('generate-invites-message');
+        if (!userSheetId) { generateMessageEl.textContent = "Please log in first."; return; }
+        generateMessageEl.textContent = 'Triggering generation... This may take a moment.';
+        try {
+            const payload = { sheetId: userSheetId, folderId: userFolderId };
+            const response = await fetch(GENERATE_INVITES_WEBHOOK_URL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            generateMessageEl.textContent = 'Success! Invitation generation has started.';
+            generateMessageEl.classList.add('success');
+        } catch (error) {
+            generateMessageEl.textContent = 'An error occurred.';
+            generateMessageEl.classList.add('error');
+            console.error('Error generating invitations:', error);
+        }
+    }
+
+        // =================================================================================
+    // --- GOOGLE PLACES AUTOCOMPLETE ---
+    // =================================================================================
+    window.initAutocomplete = function() {
+        const searchInput = document.getElementById('venue-search');
+        
+        // Create the autocomplete object
+        const autocomplete = new google.maps.places.Autocomplete(searchInput, {
+            fields: ["name", "url", "wheelchair_accessible_entrance", "website"], // Specify which data fields to return
+            types: ["establishment"] // Focus on businesses and points of interest
+        });
+
+        // Add a listener for when the user selects a place
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+
+            if (!place.name) {
+                // User entered something that was not a valid place
+                return;
+            }
+
+            // --- Populate your form fields with the data from the search result ---
+            const venueNameEl = document.getElementById('venue-name');
+            const mapsUrlEl = document.getElementById('google-maps-url');
+            const accessibilityEl = document.getElementById('accessibility-info');
+
+            if (venueNameEl) {
+                venueNameEl.value = place.name;
+            }
+
+            if (mapsUrlEl) {
+                mapsUrlEl.value = place.url;
+            }
+            
+            // This is a great bonus feature. The Places API sometimes knows about accessibility.
+            if (accessibilityEl && typeof place.wheelchair_accessible_entrance !== 'undefined') {
+                accessibilityEl.checked = place.wheelchair_accessible_entrance;
+            }
+            
+            // We could also try to get parking info, but it's not a standard field.
+            // The information above (name, url, accessibility) is highly reliable.
+        });
+    }
+
+    async function handleImageUpload(event, fieldToUpdate) {
+        const file = event.target.files[0];
+        const elementId = event.target.id;
+        const messageElementId = elementId.replace('-upload', '-message');
+        const urlElementId = elementId.replace('-upload', '-url');
+        const previewElementId = elementId.replace('-upload', '-preview');
+
+        if (!userSheetId) { alert("Please log in."); return; }
+        const messageEl = document.getElementById(messageElementId);
+        if (!file || !messageEl) return;
+        messageEl.textContent = 'Uploading...';
+        const uploadUrl = `${UPLOAD_IMAGE_WEBHOOK_URL}?field=${fieldToUpdate}&sheetId=${userSheetId}`;
+        try {
+            const response = await fetch(uploadUrl, { method: 'POST', body: file, headers: { 'Content-Type': file.type } });
+            if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
+            const result = await response.json();
+            const imageUrl = result.imageUrl;
+            if (!imageUrl) throw new Error("Server did not return an imageUrl.");
+            
+            document.getElementById(urlElementId).value = imageUrl;
+            document.getElementById(previewElementId).style.backgroundImage = `url(${imageUrl})`;
+            messageEl.textContent = 'Upload successful!';
+            messageEl.classList.add('success');
+        } catch (error) {
+            messageEl.textContent = 'Upload failed.';
+            messageEl.classList.add('error');
+            console.error('Image upload error:', error);
+        }
+    }
+
+    async function previewWebsite() {
+        // **FIX**: Use the correct message element from the preview section
+        const previewMessage = document.getElementById('preview-message');
+        const previewContainer = document.getElementById('preview-container');
+        const previewIframe = document.getElementById('preview-iframe');
+
+        if (!userSheetId) {
+            previewMessage.textContent = 'Please log in first.';
+            previewMessage.className = 'message error';
+            return;
+        }
+        previewMessage.textContent = 'Generating website preview...';
+        previewMessage.className = 'message';
+        previewContainer.style.display = 'none';
+
+        try {
+            const response = await fetch(PREVIEW_WEBSITE_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sheetId: userSheetId })
+            });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            const htmlContent = await response.text();
+            previewIframe.srcdoc = htmlContent;
+            previewContainer.style.display = 'block';
+            previewMessage.textContent = 'Preview generated successfully.';
+            previewMessage.className = 'message success';
+        } catch (error) {
+            previewMessage.textContent = 'Failed to generate preview.';
+            previewMessage.className = 'message error';
+            console.error('Error generating website preview:', error);
+        }
+    }
+
+    async function previewInvitation() {
+        // **FIX**: Use the correct message element from the preview section
+        const previewMessage = document.getElementById('preview-message');
+        const previewContainer = document.getElementById('preview-container');
+        const previewIframe = document.getElementById('preview-iframe');
+
+        if (!userSheetId) {
+            previewMessage.textContent = 'Please log in first.';
+            previewMessage.className = 'message error';
+            return;
+        }
+        previewMessage.textContent = 'Generating invitation preview...';
+        previewMessage.className = 'message';
+        previewContainer.style.display = 'none';
+
+        try {
+            const response = await fetch(PREVIEW_INVITATION_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sheetId: userSheetId })
+            });
+            if (response.status === 404) {
+                 throw new Error('No guests found in your list. Please add a guest group first.');
+            }
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+            const htmlContent = await response.text();
+            previewIframe.srcdoc = htmlContent;
+            previewContainer.style.display = 'block';
+            previewMessage.textContent = 'Invitation preview generated successfully.';
+            previewMessage.className = 'message success';
+        } catch (error) {
+            previewMessage.textContent = error.message;
+            previewMessage.className = 'message error';
+            console.error('Error generating invitation preview:', error);
+        }
+    }
+</script>
+</body>
+</html>
