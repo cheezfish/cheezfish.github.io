@@ -481,16 +481,15 @@
 
     // REPLACE your existing startProductTour function with this one.
     
-    function startProductTour() {
-        // --- THIS IS THE FIX ---
-        // This function now waits until the driver.js library is loaded.
+   function startProductTour() {
+        // This function waits until the driver.js library has loaded and created the global `driver` function.
         const interval = setInterval(() => {
-            // Check if the global `driver` object from the CDN script exists yet.
-            if (window.driver && typeof window.driver.driver === 'function') {
-                clearInterval(interval); // Stop checking
+            // THE FIX, PART 1: Check if `window.driver` exists AND is a function.
+            if (typeof window.driver === 'function') {
+                clearInterval(interval); // Stop checking, the library is ready.
 
-                // Now that we know it exists, we can safely call it.
-                const driverObj = window.driver.driver({
+                // THE FIX, PART 2: Call the function using the EXACT syntax from the documentation.
+                const driverObj = window.driver({
                     showProgress: true,
                     steps: [
                         { element: '.theme-selector-container', popover: { title: 'Step 1: Choose Your Theme', description: 'Select a visual theme for your wedding website and invitations.' } },
@@ -505,9 +504,10 @@
                     }
                 });
 
+                // Start the tour.
                 driverObj.drive();
             }
-        }, 100); // Check every 100 milliseconds
+        }, 100); // Check every 100 milliseconds.
     }
 
     // =================================================================================
