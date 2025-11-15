@@ -480,62 +480,34 @@
     // =================================================================================
 
     // REPLACE your existing startProductTour function with this one.
+    
     function startProductTour() {
-        // This is the definitive fix for the "driver is not a function" error.
-        // We call the .driver() method on the window.driver object.
-        const driverObj = window.driver.driver({
-            showProgress: true,
-            steps: [
-                { 
-                    element: '.theme-selector-container', 
-                    popover: { 
-                        title: 'Step 1: Choose Your Theme', 
-                        description: 'Select a visual theme for your wedding website and invitations. This will set the overall color scheme and mood.' 
-                    } 
-                },
-                { 
-                    element: '#wedding-details-form', 
-                    popover: { 
-                        title: 'Step 2: Enter Your Details', 
-                        description: 'Fill in all the core details about your wedding, from your names and the date to the venue and schedule. Remember to save!' 
-                    } 
-                },
-                { 
-                    element: '#save-settings-button', 
-                    popover: { 
-                        title: 'Save Your Progress', 
-                        description: 'This is the most important button! Click it any time you make changes to save them to your sheet.' 
-                    } 
-                },
-                { 
-                    element: '#add-group-form', 
-                    popover: { 
-                        title: 'Step 3: Add Guest Groups', 
-                        description: 'Add your guest groups or families here. Each group gets one unique invitation code.' 
-                    } 
-                },
-                { 
-                    element: '#preview-website-button', 
-                    popover: { 
-                        title: 'Step 4: Preview Your Work', 
-                        description: 'Use these buttons to generate a live preview of your website or an invitation for your first guest. You can do this as many times as you like.' 
-                    } 
-                },
-                { 
-                    element: '#generate-invites-button', 
-                    popover: { 
-                        title: 'Step 5: Generate Everything!', 
-                        description: 'When you are completely happy with your settings and previews, click this button to generate all the final invitation files in your Google Drive.' 
-                    } 
-                }
-            ],
-            onClose: () => {
-                // After the tour is finished or closed, mark it as completed for this user.
-                localStorage.setItem('weddingStackTourCompleted', 'true');
-            }
-        });
+        // --- THIS IS THE FIX ---
+        // This function now waits until the driver.js library is loaded.
+        const interval = setInterval(() => {
+            // Check if the global `driver` object from the CDN script exists yet.
+            if (window.driver && typeof window.driver.driver === 'function') {
+                clearInterval(interval); // Stop checking
 
-        driverObj.drive();
+                // Now that we know it exists, we can safely call it.
+                const driverObj = window.driver.driver({
+                    showProgress: true,
+                    steps: [
+                        { element: '.theme-selector-container', popover: { title: 'Step 1: Choose Your Theme', description: 'Select a visual theme for your wedding website and invitations.' } },
+                        { element: '#wedding-details-form', popover: { title: 'Step 2: Enter Your Details', description: 'Fill in all the core details about your wedding. Remember to save!' } },
+                        { element: '#save-settings-button', popover: { title: 'Save Your Progress', description: 'Click this any time you make changes to save them.' } },
+                        { element: '#add-group-form', popover: { title: 'Step 3: Add Guest Groups', description: 'Add your guest groups or families here. Each group gets one unique invitation code.' } },
+                        { element: '#preview-website-button', popover: { title: 'Step 4: Preview Your Work', description: 'Use these buttons to generate a live preview of your website or an invitation.' } },
+                        { element: '#generate-invites-button', popover: { title: 'Step 5: Generate Everything!', description: 'When you are happy with your previews, click this to generate all the final files.' } }
+                    ],
+                    onClose: () => {
+                        localStorage.setItem('weddingStackTourCompleted', 'true');
+                    }
+                });
+
+                driverObj.drive();
+            }
+        }, 100); // Check every 100 milliseconds
     }
 
     // =================================================================================
