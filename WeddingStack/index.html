@@ -96,6 +96,11 @@
             background: var(--charcoal);
             box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.2);
         }
+
+        #save-settings-button {
+            
+        }
+
         .action-button {
             display: inline-block;
             padding: 0rem 1.5rem;
@@ -118,6 +123,54 @@
             transform: translateY(-3px);
             box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.3);
         }
+
+        /* =================================================== */
+        /* --- PROMINENT BUTTON STYLES --- */
+        /* =================================================== */
+
+        .action-button.primary-action {
+            /* --- Size & Spacing --- */
+            padding: 1rem 3rem; /* More vertical and horizontal padding */
+            font-size: 1.2rem;      /* Larger font size */
+            font-weight: 500;       /* A bit bolder */
+            letter-spacing: 0.25em; /* More spacing between letters */
+
+            /* --- Visual Prominence --- */
+            background-color: var(--gold); /* Solid background color */
+            color: var(--ink);             /* Dark text for contrast */
+            box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2), 0 0 0 4px rgba(var(--gold-rgb), 0); /* Add a glow */
+            
+            /* --- Subtle Animation --- */
+            animation: pulse 2.5s infinite;
+        }
+
+        /* --- Hover & Active States --- */
+        .action-button.primary-action:hover {
+            background-color: var(--ivory); /* Change color on hover */
+            color: var(--ink);
+            transform: translateY(-4px); /* More pronounced "lift" */
+            box-shadow: 0 8px 25px rgba(var(--gold-rgb), 0.3); /* Larger shadow on hover */
+            animation-play-state: paused; /* Stop the pulse on hover */
+        }
+
+        .action-button.primary-action:active {
+            transform: translateY(-1px); /* "Press down" effect */
+            box-shadow: 0 2px 10px rgba(var(--gold-rgb), 0.3);
+        }
+
+        /* --- Pulsing Animation Keyframes --- */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2), 0 0 0 0 rgba(var(--gold-rgb), 0.3);
+            }
+            70% {
+                box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2), 0 0 0 8px rgba(var(--gold-rgb), 0);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(var(--gold-rgb), 0.2), 0 0 0 0 rgba(var(--gold-rgb), 0);
+            }
+        }
+
         .message { margin-top: 1.5rem; min-height: 1.5em; font-size: 0.9rem; font-weight: 300; letter-spacing: 0.05em; transition: color 0.3s ease; }
         .message.success { color: var(--accent); }
         .message.error { color: #e57373; }
@@ -304,7 +357,7 @@
                         <div class="form-group"><label for="gift-registry-btn-text">Gift Button Text</label><input type="text" id="gift-registry-btn-text" placeholder="e.g., Contribute to our Honeymoon" required></div>
                         <div class="form-group full-width"><label for="gift-policy-text">Gift Policy Text (Optional)</label><textarea id="gift-policy-text" placeholder="Leave blank for default text"></textarea></div>
                     </div>
-                    <button id="save-settings-button" class="action-button" style="margin-top: 2rem;">Save Details</button>
+                    <button id="save-settings-button" class="action-button primary-action" style="margin-top: 2rem;">Save Details</button>
                     <p id="settings-message" class="message"></p>
                 </form>
             </div>
@@ -339,7 +392,7 @@
             <div class="section">
                 <h2 class="section-title">Step 5: Generate Invitations & Website</h2>
                 <p class="section-description">Click this button to trigger the n8n workflow. It will use the **saved details** to generate personalized invitations for all the groups.</p>
-                <button id="generate-invites-button" class="action-button">Generate Invitations</button>
+                <button id="generate-invites-button" class="action-button primary-action">Generate Invitations</button>
                 <p id="generate-invites-message" class="message"></p>
             </div>
 
