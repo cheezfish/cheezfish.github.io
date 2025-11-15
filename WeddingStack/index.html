@@ -237,6 +237,19 @@
         #main-content {
             display: none;
         }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* Stack to a single column */
+            }
+
+            #generate-invites-button {
+                font-size: 0.9rem;      /* Make the font slightly smaller */
+                letter-spacing: 0.1em;  /* Reduce letter spacing */
+                padding: 1rem 1.5rem;   /* Adjust padding if needed */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -384,8 +397,10 @@
                     Click these buttons to generate a live preview of your wedding website and invitations. The preview will appear below. 
                     Note: The RSVP form in the preview will not work correctly, this is for visual preview only.
                 </p>
-                <button id="preview-website-button" class="action-button">Website</button>
-                <button id="preview-invitation-button" class="action-button" style="margin-right: 1rem;">Invitation</button>
+                <div class="button-group">
+                    <button id="preview-website-button" class="action-button">Website</button>
+                    <button id="preview-invitation-button" class="action-button">Invitation</button>
+                </div>
                 <p id="preview-message" class="message"></p>
 
                 <div id="preview-container" style="margin-top: 3rem; border: 1px solid var(--slate); background: white; display: none;">
