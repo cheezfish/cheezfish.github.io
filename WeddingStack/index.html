@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -284,6 +285,10 @@
                 <div class="header-subtitle">Invitation Management</div>
             </header>
 
+            <button onclick="startProductTour()" class="action-button" style="padding: 0.5rem 1.5rem; font-size: 0.8rem; margin-top: 2rem;">
+            Start Tour
+            </button>
+
             <div class="section">
                 <h2 class="section-title">Step 1: Select a Theme</h2>
                 <div class="theme-selector-container">
@@ -420,6 +425,8 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js"></script>
+
     <script>
     // =================================================================================
     // --- CONFIGURATION ---
@@ -469,6 +476,67 @@
     let selectedTheme = 'midnight-gold';
 
     // =================================================================================
+    // --- PRODUCT TOUR (DRIVER.JS) ---
+    // =================================================================================
+
+    function startProductTour() {
+        const driver = window.driver.js.driver;
+
+        const driverObj = driver({
+            showProgress: true,
+            steps: [
+                { 
+                    element: '.theme-selector-container', 
+                    popover: { 
+                        title: 'Step 1: Choose Your Theme', 
+                        description: 'Select a visual theme for your wedding website and invitations. This will set the overall color scheme and mood.' 
+                    } 
+                },
+                { 
+                    element: '#wedding-details-form', 
+                    popover: { 
+                        title: 'Step 2: Enter Your Details', 
+                        description: 'Fill in all the core details about your wedding, from your names and the date to the venue and schedule. Remember to save!' 
+                    } 
+                },
+                { 
+                    element: '#save-settings-button', 
+                    popover: { 
+                        title: 'Save Your Progress', 
+                        description: 'This is the most important button! Click it any time you make changes to save them to your sheet.' 
+                    } 
+                },
+                { 
+                    element: '#add-group-form', 
+                    popover: { 
+                        title: 'Step 3: Add Guest Groups', 
+                        description: 'Add your guest groups or families here. Each group gets one unique invitation code.' 
+                    } 
+                },
+                { 
+                    element: '#preview-website-button', 
+                    popover: { 
+                        title: 'Step 4: Preview Your Work', 
+                        description: 'Use these buttons to generate a live preview of your website or an invitation for your first guest. You can do this as many times as you like.' 
+                    } 
+                },
+                { 
+                    element: '#generate-invites-button', 
+                    popover: { 
+                        title: 'Step 5: Generate Everything!', 
+                        description: 'When you are completely happy with your settings and previews, click this button to generate all the final invitation files in your Google Drive.' 
+                    } 
+                }
+            ]
+        });
+
+        driverObj.drive();
+
+        // After the tour is finished, mark it as completed for this user.
+        localStorage.setItem('weddingStackTourCompleted', 'true');
+    }
+
+    // =================================================================================
     // --- CORE APP LOGIC ---
     // =================================================================================
     document.addEventListener('DOMContentLoaded', () => {
@@ -500,6 +568,7 @@
         }
     }
 
+    // REPLACE your existing handleCredentialResponse function with this one.
     async function handleCredentialResponse(response) {
         const loginMessageEl = document.getElementById('login-message');
         loginMessageEl.textContent = 'Verifying user...';
@@ -514,10 +583,24 @@
             if (!res.ok) throw new Error(`Server error: ${res.status}`);
             const result = await res.json();
             
+            // Check if this is a brand new user
+            const isNewUser = result.status === 'created';
+
             const userToStore = { sheetId: result.sheetId, folderId: result.folderId, name: userData.name };
             localStorage.setItem('weddingStackUser', JSON.stringify(userToStore));
             
+            // Now, run the checkLoginState function to set up the page
             checkLoginState();
+
+            // --- THIS IS THE NEW LOGIC ---
+            // If it's a new user, wait a moment for the page to render, then start the tour.
+            const tourCompleted = localStorage.getItem('weddingStackTourCompleted');
+            if (isNewUser && !tourCompleted) {
+                setTimeout(() => {
+                    startProductTour();
+                }, 1000); // Wait 1 second for the UI to settle
+            }
+
         } catch (error) {
             console.error("Error during user lookup:", error);
             loginMessageEl.textContent = 'An error occurred during login. Please try again.';
