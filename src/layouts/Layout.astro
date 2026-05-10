@@ -46,16 +46,17 @@ const {
   </script>
 </head>
 <body>
+  <canvas id="ripple-canvas" aria-hidden="true"></canvas>
   <slot />
 
   <script>
-    // Cursor glow
+    // ── Cursor glow ──
     document.addEventListener('mousemove', (e) => {
       document.documentElement.style.setProperty('--cx', e.clientX + 'px');
       document.documentElement.style.setProperty('--cy', e.clientY + 'px');
     });
 
-    // Sticky header
+    // ── Sticky header ──
     const header = document.getElementById('site-header');
     const hero = document.getElementById('hero');
     if (header && hero) {
@@ -66,7 +67,7 @@ const {
       obs.observe(hero);
     }
 
-    // Scroll reveal
+    // ── Scroll reveal ──
     const revealEls = document.querySelectorAll('.reveal');
     const revealObs = new IntersectionObserver(
       (entries) => {
@@ -80,6 +81,132 @@ const {
       { threshold: 0.12 }
     );
     revealEls.forEach(el => revealObs.observe(el));
+
+    // ── Dot grid + ripple displacement ──
+    const canvas = document.getElementById('ripple-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d')!;
+    const GRID = 40;
+    interface Ripple { x: number; y: number; r: number; alpha: number }
+    const ripples: Ripple[] = [];
+    let lastRipple = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastRipple < 60) return;
+      lastRipple = now;
+      ripples.push({ x: e.clientX, y: e.clientY, r: 0, alpha: 1 });
+    });
+
+    function drawDots() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        ripples[i].r += 3;
+        ripples[i].alpha = Math.max(0, 1 - ripples[i].r / 160);
+        if (ripples[i].alpha <= 0) ripples.splice(i, 1);
+      }
+
+      const cols = Math.ceil(canvas.width / GRID) + 2;
+      const rows = Math.ceil(canvas.height / GRID) + 2;
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const bx = col * GRID;
+          const by = row * GRID;
+          let dx = 0, dy = 0, boost = 0;
+
+          for (const rip of ripples) {
+            const dist = Math.hypot(bx - rip.x, by - rip.y);
+            const diff = dist - rip.r;
+            if (Math.abs(diff) < 28) {
+              const intensity = (1 - Math.abs(diff) / 28) * rip.alpha;
+              const angle = Math.atan2(by - rip.y, bx - rip.x);
+              const push = Math.sin((diff / 28) * Math.PI) * intensity * 7;
+              dx += Math.cos(angle) * push;
+              dy += Math.sin(angle) * push;
+              boost += intensity * 0.25;
+            }
+          }
+
+          ctx.beginPath();
+          ctx.arc(bx + dx, by + dy, 0.9, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${Math.min(0.9, 0.06 + boost)})`;
+          ctx.fill();
+        }
+      }
+
+      requestAnimationFrame(drawDots);
+    }
+    drawDots();
+
+    // ── Card 3D tilt ──
+    document.querySelectorAll<HTMLElement>('.card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // ── Magnetic buttons ──
+    document.querySelectorAll<HTMLElement>('.btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.3;
+        const y = (e.clientY - r.top - r.height / 2) * 0.3;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // ── Stats counter ──
+    function animateCount(el: HTMLElement, target: number, suffix: string) {
+      const duration = 1200;
+      const start = performance.now();
+      const update = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target) + suffix;
+        if (p < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+
+    const statEls = document.querySelectorAll<HTMLElement>('.stat-num');
+    const statObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const text = el.textContent || '';
+        const num = parseInt(text);
+        const suffix = text.replace(/[0-9]/g, '');
+        if (!isNaN(num)) animateCount(el, num, suffix);
+        statObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    statEls.forEach(el => statObs.observe(el));
   </script>
+
+  <style>
+    #ripple-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
 </body>
 </html>

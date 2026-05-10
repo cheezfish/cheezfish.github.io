@@ -43,16 +43,7 @@ body::before {
   transition: background 0.1s linear;
 }
 
-/* ── Subtle dot grid on background ── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
+/* dot grid is drawn by ripple-canvas in Layout.astro */
 
 /* ── Layout ── */
 .wrapper {
