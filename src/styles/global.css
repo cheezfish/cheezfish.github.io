@@ -1,0 +1,281 @@
+/* ── Design tokens ── */
+:root {
+  --bg: #000;
+  --fg: #fff;
+  --accent: #1EAEDB;
+  --accent-dim: rgba(30, 174, 219, 0.12);
+  --accent-glow: rgba(30, 174, 219, 0.25);
+  --muted: rgba(255, 255, 255, 0.45);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.07);
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --max: 1200px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── Base ── */
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Cursor glow (follows mouse via JS) ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    700px circle at var(--cx, 50%) var(--cy, 50%),
+    rgba(30, 174, 219, 0.055),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.1s linear;
+}
+
+/* ── Subtle dot grid on background ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+section {
+  padding: 96px 0;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-mono);
+  line-height: 1.15;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── Sticky header ── */
+#site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), background 0.4s var(--ease);
+  pointer-events: none;
+}
+#site-header.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+}
+.header-logo {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--fg);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.header-logo span { color: var(--accent); }
+.header-nav {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.header-nav a {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.25s var(--ease);
+}
+.header-nav a:hover { color: var(--fg); }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease);
+}
+.btn:hover {
+  background: var(--accent-dim);
+  transform: translateY(-2px);
+}
+.btn--solid {
+  background: var(--accent);
+  color: var(--bg);
+}
+.btn--solid:hover {
+  background: #17a0cc;
+  color: var(--bg);
+}
+
+/* ── Project cards ── */
+/* ── Project cards ── */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--card-bg);
+  cursor: pointer;
+  aspect-ratio: 926 / 428; /* matches actual image dimensions — no side cropping */
+  display: block;
+  text-decoration: none;
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease), filter 0.5s var(--ease);
+  filter: brightness(0.72) saturate(0.85);
+}
+
+.card:hover .card__img {
+  transform: scale(1.06);
+  filter: brightness(1) saturate(1.1);
+}
+
+.card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 28px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+
+.card:hover .card__overlay { opacity: 1; transform: none; }
+
+.card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+
+.card__title {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.2;
+}
+
+/* ── Project grids ── */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  overflow: hidden; /* clips image skew overflow at section boundary */
+}
+
+/* First card in projects grid is featured (wider) */
+.bento.bento--projects > a:first-child {
+  grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .bento.bento--projects > a:first-child { grid-column: span 1; }
+}
+
+@media (max-width: 560px) {
+  .bento { grid-template-columns: 1fr; }
+  .bento .card { aspect-ratio: 3/2; }
+}
+
+/* ── Divider ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--card-border);
+  margin: 0;
+}
+
+/* ── Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

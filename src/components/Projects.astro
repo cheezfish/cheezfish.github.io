@@ -1,0 +1,177 @@
+---
+const projects = [
+  {
+    title: 'CAFFY',
+    img: '/images/project9.webp',
+    url: 'https://getcaffy.com',
+    tag: 'Brand',
+    size: 'feat',
+  },
+  {
+    title: 'BRO & ARROW',
+    img: '/images/project10.webp',
+    url: '/BroArrow',
+    tag: 'Game Dev',
+    size: 'med',
+  },
+  {
+    title: 'Echoes',
+    img: '/images/project14.webp',
+    url: 'https://echoes-app.netlify.app/',
+    tag: 'Interaction Design',
+    size: 'reg',
+  },
+  {
+    title: 'Medley',
+    img: '/images/project1.webp',
+    url: 'https://echoes-app.netlify.app/medley',
+    tag: 'Interaction Design',
+    size: 'reg',
+  },
+  {
+    title: 'The Bog Standard',
+    img: '/images/project15.webp',
+    url: 'https://thebogstandard.org/',
+    tag: 'Editorial',
+    size: 'reg',
+  },
+  {
+    title: 'London Map',
+    img: '/images/project11.webp',
+    url: 'https://www.google.com/maps/d/u/0/edit?hl=en&mid=1HcwdCWV4VRbq8EGpZteyrlXI9opYjjw',
+    tag: 'Design',
+    size: 'reg',
+  },
+];
+
+const clients = [
+  {
+    title: 'Second Sunset',
+    img: '/images/project13.webp',
+    url: 'https://open.spotify.com/artist/2C67AXWsI7A3rvhwJgd1jq',
+    tag: 'Copywriting',
+    size: 'wide',
+  },
+  {
+    title: 'Mather Carroll',
+    img: '/images/project7.webp',
+    url: 'https://snowy-path-fa0.notion.site/Mather-Carroll-A-new-home-page-for-real-estate-40e76812d3fd485f896245225d504b85?pvs=4',
+    tag: 'UX Design',
+    size: 'wide',
+  },
+  {
+    title: "Traffik 'n' Sex",
+    img: '/images/project8.webp',
+    url: 'https://youtu.be/N26vnDrJR2A',
+    tag: 'Copywriting',
+    size: 'wide',
+  },
+  {
+    title: 'Travellust Magazine',
+    img: '/images/project12.webp',
+    url: 'https://travellustmagazine.com/',
+    tag: 'Editorial',
+    size: 'wide',
+  },
+  {
+    title: 'Elipptic',
+    img: '/images/project3.webp',
+    url: 'https://snowy-path-fa0.notion.site/Elipptic-e57e030724b44688bf3dc2ebb000e715',
+    tag: 'Interaction Design',
+    size: 'wide',
+  },
+];
+
+const pastProjects = [
+  {
+    title: 'Ting',
+    img: '/images/project2.webp',
+    url: 'https://snowy-path-fa0.notion.site/Ting-182aef61e14647c7aa6c66f09c7be7ae',
+    tag: 'Product Design',
+    size: 'wide',
+  },
+  {
+    title: "Dadababa's",
+    img: '/images/project6.webp',
+    url: 'https://snowy-path-fa0.notion.site/Dadababa-s-Hardcore-Chana-57a563bd17074949a9523afb8f4ee3f4',
+    tag: 'Branding',
+    size: 'wide',
+  },
+  {
+    title: 'CommonSans',
+    img: '/images/project4.webp',
+    url: 'https://snowy-path-fa0.notion.site/CommonSans-a49790349ceb4b8090298cc92a1c8055',
+    tag: 'UX Design',
+    size: 'wide',
+  },
+  {
+    title: 'La Maison',
+    img: '/images/project5.webp',
+    url: 'https://snowy-path-fa0.notion.site/La-Maison-80ad8bba48374cc784596d54511e698a',
+    tag: 'Interaction Design',
+    size: 'wide',
+  },
+];
+
+type Project = typeof projects[0];
+
+function Card({ title, img, url, tag }: Project) {
+  return `
+    <a href="${url}" class="card" target="_blank" rel="noopener" aria-label="${title}">
+      <img class="card__img" src="${img}" alt="${title}" loading="lazy">
+      <div class="card__overlay">
+        <span class="card__tag">${tag}</span>
+        <p class="card__title">${title}</p>
+      </div>
+    </a>
+  `;
+}
+---
+
+<section id="work">
+  <div class="wrapper">
+
+    <div class="projects-block reveal">
+      <p class="section-label">Projects</p>
+      <div class="bento bento--projects" set:html={projects.map(p => Card(p)).join('')} />
+    </div>
+
+    <hr class="divider section-gap" />
+
+    <div class="projects-block reveal">
+      <p class="section-label">Clients</p>
+      <div class="bento clients-grid" set:html={clients.map(p => Card(p)).join('')} />
+    </div>
+
+    <hr class="divider section-gap" />
+
+    <div class="projects-block reveal">
+      <p class="section-label">Past Projects</p>
+      <div class="bento past-grid" set:html={pastProjects.map(p => Card(p)).join('')} />
+    </div>
+
+  </div>
+</section>
+
+<style>
+  #work {
+    padding: 40px 0 96px;
+  }
+
+  .projects-block {
+    padding: 56px 0;
+  }
+
+  .section-gap {
+    margin: 0;
+  }
+
+  /* Past projects: 2-col to feel more considered */
+  .past-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 560px) {
+    .past-grid { grid-template-columns: 1fr; }
+  }
+</style>

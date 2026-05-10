@@ -1,0 +1,340 @@
+---
+---
+
+<header id="site-header">
+  <a class="header-logo" href="/">cheez<span>fish</span></a>
+  <nav>
+    <ul class="header-nav">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="hero">
+  <div class="hero-inner wrapper">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Based in London</p>
+      <h1 class="hero-name">
+        Hi, this is<br>
+        <span class="glitch-name" data-text="Cheezfish">Imran</span>
+      </h1>
+      <div class="hero-roles">
+        <a href="https://drive.google.com/file/d/1g0FspV63qIispoSWriU93KmdQ6_0O1P2/view?usp=sharing" class="role-link" target="_blank" rel="noopener">
+          <span class="role-bullet">—</span> Roboticist
+        </a>
+        <a href="https://snowy-path-fa0.notion.site/Imran-Aziz-Interaction-Designer-460348d7b16840179fc5968085711259?pvs=4" class="role-link" target="_blank" rel="noopener">
+          <span class="role-bullet">—</span> Interaction Designer
+        </a>
+        <a href="https://linkedin.com/in/thisisimran" class="role-link" target="_blank" rel="noopener">
+          <span class="role-bullet">—</span> Copywriter
+        </a>
+      </div>
+      <div class="hero-socials">
+        <a href="http://linkedin.com/in/thisisimran/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+          <img src="/icons/linkedin.png" alt="" width="22" height="22">
+        </a>
+        <a href="https://github.com/cheezfish" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+        <a href="http://instagram.com/yankeedoodlegandhi" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+          <img src="/icons/instagram.png" alt="" width="22" height="22">
+        </a>
+        <a href="http://soundcloud.com/cheezfish" target="_blank" rel="noopener" class="social-link" aria-label="SoundCloud">
+          <img src="/icons/soundcloud.png" alt="" width="22" height="22">
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="profile-ring">
+        <canvas id="canvas-image-blending" class="profile-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<script>
+  import Granim from 'granim';
+
+  new Granim({
+    element: '#canvas-image-blending',
+    direction: 'radial',
+    isPausedWhenNotInView: true,
+    image: {
+      source: '/profile/pptesty.png',
+      blendingMode: 'destination-atop',
+    },
+    states: {
+      'default-state': {
+        gradients: [
+          ['#000000', '#1EAEDB'],
+          ['#000000', '#9412A5'],
+          ['#000000', '#1E6AE1'],
+          ['#000000', '#1EAEDB'],
+        ],
+        transitionSpeed: 8000,
+      },
+    },
+  });
+</script>
+
+<style>
+  #hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 0 60px;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    flex: 1;
+  }
+
+  /* ── Left ── */
+  .hero-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero-name {
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 32px;
+    color: var(--fg);
+  }
+
+  /* Glitch effect — sacred, improved */
+  .glitch-name {
+    display: inline-block;
+    position: relative;
+    color: var(--fg);
+    cursor: default;
+  }
+
+  .glitch-name::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    opacity: 0;
+    color: var(--accent);
+  }
+
+  .glitch-name:hover {
+    animation: glitch 0.8s steps(1, end) forwards;
+  }
+  .glitch-name:hover::after {
+    animation: glitch-reveal 0.8s steps(1, end) forwards;
+  }
+
+  @keyframes glitch {
+    0%   { transform: translate(0); color: inherit; }
+    10%  { transform: translate(-2px, 2px); color: #ff00ff; }
+    20%  { transform: translate(2px, -2px); color: #00ffff; }
+    30%  { transform: translate(-2px, -2px); color: #ffff00; }
+    40%  { transform: translate(2px, 2px); color: #ff00ff; }
+    50%  { transform: translate(-2px, 2px); color: #00ffff; }
+    60%  { transform: translate(0); color: inherit; }
+    100% { transform: translate(0); color: transparent; }
+  }
+
+  @keyframes glitch-reveal {
+    0%  { opacity: 0; }
+    60% { opacity: 0; transform: translate(2px, -2px); }
+    100%{ opacity: 1; transform: translate(0); }
+  }
+
+  /* ── Roles ── */
+  .hero-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  .role-link {
+    font-family: var(--font-mono);
+    font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    background-image: linear-gradient(to right, #ffff00 0, #ffff00 100%);
+    background-position: 0 -0.05em;
+    background-size: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s var(--ease), color 0.3s var(--ease);
+    padding-bottom: 2px;
+  }
+
+  .role-link:hover {
+    background-size: 100% 100%;
+    color: #000;
+  }
+
+  .role-bullet {
+    color: var(--accent);
+    transition: color 0.3s var(--ease);
+  }
+
+  .role-link:hover .role-bullet {
+    color: #000;
+  }
+
+  /* ── Socials ── */
+  .hero-socials {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    opacity: 0.6;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), color 0.25s var(--ease);
+  }
+
+  .social-link:hover {
+    opacity: 1;
+    color: var(--fg);
+    transform: translateY(-3px);
+  }
+
+  .social-link img { display: block; filter: brightness(0) invert(1); }
+
+  /* ── Right / profile ── */
+  .hero-right {
+    flex-shrink: 0;
+  }
+
+  .profile-ring {
+    position: relative;
+    width: clamp(260px, 28vw, 380px);
+    height: clamp(260px, 28vw, 380px);
+  }
+
+  /* Rotating accent ring */
+  .profile-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--accent) 0deg,
+      transparent 60deg,
+      transparent 180deg,
+      #9412A5 200deg,
+      transparent 260deg,
+      transparent 360deg
+    );
+    animation: spin-ring 8s linear infinite;
+    opacity: 0.7;
+  }
+
+  /* Glow behind ring */
+  .profile-ring::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes spin-ring {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  .profile-canvas {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* ── Scroll hint ── */
+  .hero-scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 32px;
+    opacity: 0.35;
+  }
+
+  .hero-scroll-hint span {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--fg), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    50% { opacity: 0.4; transform: scaleY(0.5); transform-origin: top; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    #hero { padding: 80px 0 40px; }
+
+    .hero-inner {
+      flex-direction: column-reverse;
+      gap: 40px;
+      text-align: center;
+    }
+
+    .hero-roles { align-items: center; }
+    .hero-socials { justify-content: center; }
+
+    .profile-ring {
+      width: 220px;
+      height: 220px;
+    }
+
+    .glitch-name:hover { animation: none; }
+    .glitch-name:hover::after { animation: none; }
+  }
+</style>

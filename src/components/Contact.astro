@@ -1,0 +1,195 @@
+---
+---
+
+<section id="contact">
+  <div class="wrapper">
+    <p class="section-label reveal">Get In Touch</p>
+
+    <p class="contact-intro reveal reveal-delay-1">Drop a message below, or use the booking links at the bottom to schedule time directly.</p>
+
+    <div id="contact-form" class="contact-glass reveal reveal-delay-2">
+      <form action="https://formspree.io/f/mgerqwwl" method="POST" class="contact-form-inner">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Your email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="form-field">
+            <label for="reason">Reason</label>
+            <select id="reason" name="reason">
+              <option value="Questions">Questions</option>
+              <option value="Admiration">Admiration</option>
+              <option value="Can I get your number?">Can I get your number?</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Hi Imran…" required></textarea>
+        </div>
+
+        <div class="form-footer">
+          <label class="checkbox-label">
+            <input type="checkbox" name="copy">
+            <span>Send a copy to myself</span>
+          </label>
+          <button type="submit" class="btn btn--solid">Send it</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const toggle = document.getElementById('contact-toggle');
+  const form = document.getElementById('contact-form');
+
+  if (toggle && form) {
+    toggle.addEventListener('click', () => {
+      const isOpen = !form.hidden;
+
+      if (isOpen) {
+        form.style.maxHeight = form.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          form.style.maxHeight = '0';
+          form.style.opacity = '0';
+        });
+        setTimeout(() => { form.hidden = true; }, 400);
+        toggle.textContent = 'Contact Me';
+        toggle.setAttribute('aria-expanded', 'false');
+      } else {
+        form.hidden = false;
+        form.style.maxHeight = '0';
+        form.style.opacity = '0';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            form.style.maxHeight = form.scrollHeight + 'px';
+            form.style.opacity = '1';
+          });
+        });
+        setTimeout(() => { form.style.maxHeight = 'none'; }, 400);
+        toggle.textContent = 'Hide Form';
+        toggle.setAttribute('aria-expanded', 'true');
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+</script>
+
+<style>
+  #contact {
+    padding: 40px 0 96px;
+  }
+
+  .contact-intro {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+    max-width: 520px;
+  }
+
+  #contact-form {
+    overflow: hidden;
+    max-height: none;
+    opacity: 1;
+    transition: max-height 0.4s var(--ease), opacity 0.4s var(--ease);
+  }
+
+  .contact-glass {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 48px;
+    max-width: 720px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-field label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    -webkit-appearance: none;
+    appearance: none;
+    resize: vertical;
+  }
+
+  .form-field select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231EAEDB' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-dim);
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    .contact-glass { padding: 32px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>

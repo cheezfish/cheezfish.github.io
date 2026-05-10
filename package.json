@@ -1,0 +1,14 @@
+{
+  "name": "cheezfish",
+  "type": "module",
+  "version": "2.0.0",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "granim": "^2.0.0"
+  }
+}

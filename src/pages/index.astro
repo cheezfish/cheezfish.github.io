@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import Reviews from '../components/Reviews.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<Layout>
+  <Hero />
+  <About />
+  <hr class="divider" style="max-width:1200px;margin:0 auto;" />
+  <Projects />
+  <hr class="divider" style="max-width:1200px;margin:0 auto;" />
+  <Reviews />
+  <hr class="divider" style="max-width:1200px;margin:0 auto;" />
+  <Contact />
+  <Footer />
+</Layout>

@@ -1,0 +1,85 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'imran azizuddin — portfolio | cheezfish',
+  description = 'Imran Azizuddin — portfolio of work in Robotics, Interaction Design, and Copywriting.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="author" content="Imran Azizuddin">
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://cheezfish.com/profile/ppACTUAL.png" />
+  <meta property="og:url" content="https://cheezfish.com/" />
+  <meta property="og:type" content="website" />
+
+  <link rel="canonical" href="https://cheezfish.com/" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favi/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favi/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favi/favicon-16x16.png">
+  <link rel="manifest" href="/favi/site.webmanifest">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8BM7N6188G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8BM7N6188G');
+  </script>
+</head>
+<body>
+  <slot />
+
+  <script>
+    // Cursor glow
+    document.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--cx', e.clientX + 'px');
+      document.documentElement.style.setProperty('--cy', e.clientY + 'px');
+    });
+
+    // Sticky header
+    const header = document.getElementById('site-header');
+    const hero = document.getElementById('hero');
+    if (header && hero) {
+      const obs = new IntersectionObserver(
+        ([entry]) => header.classList.toggle('visible', !entry.isIntersecting),
+        { threshold: 0.1 }
+      );
+      obs.observe(hero);
+    }
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(el => {
+          if (el.isIntersecting) {
+            el.target.classList.add('in-view');
+            revealObs.unobserve(el.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealEls.forEach(el => revealObs.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --bg-light: #f5efe1;
+    --bg-dark: #1a1a1a;
+    --primary-red: #e74c3c;
+    --secondary-brown: #8c5a3b;
+    --text-dark: #3d2f2b;
+    --text-light: #f0f0f0;
+    --font-heading: 'Teko', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h2 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--primary-red);
+    margin: 0 0 20px 0;
+    letter-spacing: 1px;
+}
+
+.content-section {
+    padding: 60px 20px;
+}
+
+.dark-section {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.dark-section h2 {
+    color: var(--text-light);
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: -10px auto 40px auto;
+    color: #ccc;
+}
+
+
+/* --- Hero Section --- */
+.hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    /* NEW: Add a subtle radial gradient for depth and visual interest */
+    background: radial-gradient(circle at center, var(--bg-light) 0%, rgba(245, 239, 225, 0.9) 70%, var(--bg-light) 100%);
+    /* You could also consider a subtle background image if you have one that fits the game theme */
+    /* background-image: url('images/subtle-game-texture.png'); */
+    /* background-repeat: repeat; */
+    /* background-size: cover; */
+    /* background-color: var(--bg-light); */
+}
+.hero-content {
+    max-width: 1000px;
+    position: relative; /* Ensure content is above any potential background layers */
+    z-index: 2; /* Ensure content is above any potential background layers */
+}
+.logo {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    margin-bottom: 1rem;
+    /* NEW: Add a subtle drop shadow to make the logo pop */
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.25));
+}
+.tagline {
+    font-size: 1.4rem; /* Slightly larger font size */
+    font-weight: 700;
+    margin-bottom: 2rem;
+    /* NEW: Add a subtle text shadow for better readability and depth */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+.hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Slightly more space between buttons on smaller screens */
+}
+.store-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* NEW: Add a default box-shadow to give buttons a lifted appearance */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* More visible default shadow */
+}
+.store-button:hover {
+    transform: translateY(-5px); /* More pronounced lift on hover */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3); /* More pronounced shadow on hover */
+}
+.store-button i {
+    font-size: 1.6rem; /* Slightly larger icons */
+    margin-right: 12px; /* Slightly more space next to icons */
+}
+.store-button.apple {
+    background-color: #000;
+    color: #fff;
+}
+.store-button.google {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+}
+
+/* --- Trailer & Video --- */
+.video-container {
+    max-width: 960px;
+    margin: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+.video-container iframe {
+    width: 100%; height: 100%;
+    border: 0;
+}
+
+/* --- Angled Separator --- */
+.angled-separator {
+    width: 100%;
+    height: 100px;
+    background-color: var(--bg-dark);
+    clip-path: polygon(0 0, 100% 100%, 100% 0);
+    margin-top: -1px;
+}
+
+/* --- Features Section --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: auto;
+}
+.feature-item {
+    text-align: center;
+}
+.feature-item i {
+    font-size: 3rem;
+    color: var(--primary-red);
+    margin-bottom: 1rem;
+}
+.feature-item h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Gallery Section --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    max-width: 1200px;
+    margin: auto;
+}
+.gallery-grid a {
+    display: block; overflow: hidden; border-radius: 8px;
+    aspect-ratio: 16 / 9;
+}
+.gallery-grid img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.gallery-grid a:hover img {
+    transform: scale(1.1);
+}
+
+/* --- Download Section (with QR Codes) --- */
+.download-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
+    margin: auto;
+}
+.download-card {
+    background: #2b2b2b;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+}
+.qr-code {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.store-badge img {
+    height: 60px;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #111;
+    color: #888;
+    text-align: center;
+    padding: 40px 20px;
+}
+.social-links {
+    margin-bottom: 20px;
+}
+.social-links a {
+    color: #eee;
+    font-size: 1.8rem;
+    margin: 0 15px;
+    transition: color 0.2s;
+}
+.social-links a:hover {
+    color: var(--primary-red);
+}
+
+/* --- Animations --- */
+.animate-on-load {
+    animation: fadeInUp 0.8s ease-out both;
+}
+.animate-on-load:nth-child(2) { animation-delay: 0.2s; }
+.animate-on-load:nth-child(3) { animation-delay: 0.4s; }
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- DESKTOP STYLES (Progressive Enhancement) --- */
+@media (min-width: 768px) {
+    h2 { font-size: 4.5rem; }
+    .hero-cta { flex-direction: row; justify-content: center; }
+    .features-grid { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .download-container { flex-direction: row; }
+
+    /* NEW: Desktop adjustments for hero section */
+    .tagline {
+        font-size: 1.7rem; /* Make tagline larger on desktop */
+    }
+    .hero-cta {
+        gap: 2rem; /* More space between buttons on desktop */
+    }
+}

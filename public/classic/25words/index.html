@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25 Words or Less</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .score-display {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .game-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .word-display {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            min-height: 1.5em;
+        }
+        .timer-wordcount {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .timer, .word-count {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #E63946;
+            background-color: #f8d7da;
+            padding: 10px 20px;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        .word-count {
+            color: #4CAF50;
+            background-color: #d4edda;
+        }
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            flex: 1;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        #startButton {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+            padding: 20px;
+        }
+        #startButton:hover { background-color: #218838; }
+        #correctButton {
+            background-color: #007BFF;
+            color: white;
+        }
+        #correctButton:hover { background-color: #0056b3; }
+        #passButton {
+            background-color: #ffc107;
+            color: #333;
+        }
+        #passButton:hover { background-color: #e0a800; }
+        #listenButton {
+            background-color: #007BFF;
+            color: white;
+            flex: 1;
+        }
+        #listenButton:hover { background-color: #0056b3; }
+        .info-text {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>25 Words or Less</h1>
+    
+    <div id="introScreen">
+        <div class="score-display">
+            Your Round Score: <span id="roundScore">0</span>
+        </div>
+        <p class="info-text">
+            To start your turn, press the "Start Round" button below.
+        </p>
+        <button id="startButton" class="btn">Start Round</button>
+    </div>
+
+    <div id="gameScreen" class="game-area">
+        <div class="timer-wordcount">
+            <div class="timer">Time: <span id="timer">60</span>s</div>
+            <div class="word-count">Words: <span id="wordCount">25</span></div>
+        </div>
+        <div class="word-display" id="currentWord"></div>
+        <div class="buttons">
+            <button id="correctButton" class="btn">Correct</button>
+            <button id="passButton" class="btn">Pass</button>
+        </div>
+        <div class="extra-buttons" style="margin-top: 15px;">
+            <button id="listenButton" class="btn">Start Listening</button>
+        </div>
+        <div class="info-text">
+            Guesser must announce when they get a word right. Clue Giver presses "Correct".
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Configuration ---
+        const ROUND_TIME = 60;
+        const STARTING_WORD_COUNT = 25;
+        const NUM_WORDS_PER_ROUND = 8;
+        const words = [
+            "Apple", "House", "Computer", "Ocean", "Guitar", "Elephant", "Mountain", "Rainbow", "Coffee", "Bicycle", "Book", "Keyboard", "Moon", "Pizza", "Fireplace", "Socks", "Window", "Blanket", "Castle", "Robot", "Spoon", "Forest", "Pillow", "Volcano", "Diamond", "Train", "Jungle", "Cloud", "Speaker", "Wallet", "River", "Car", "Chair", "Sun", "Dog", "Phone", "Bridge", "Key", "Star", "Bread", "Camera", "Door", "Fish", "Lamp", "Ship", "Shoe", "Sky", "Table", "Watch", "Water", "Ball", "Bed", "Bird", "Boat", "Box", "Bus", "Cake", "Candle", "Cat", "Clock", "Coin", "Cup", "Desk", "Drum", "Duck", "Ear", "Egg", "Eye", "Fan", "Flag", "Floor", "Flower", "Fork", "Fox", "Frog", "Game", "Gate", "Ghost", "Glass", "Glove", "Goat", "Grape", "Grass", "Hat", "Heart", "Helicopter", "Honey", "Horse", "Island", "Jacket", "Jellyfish", "Juice", "Kite", "Lake", "Leaf", "Lemon", "Lion", "Map", "Mask", "Milk", "Mirror", "Monkey", "Motorcycle", "Mouse", "Mushroom", "Nail", "Necklace", "Needle", "Nest", "Night", "Nose", "Note", "Orange", "Owl", "Paint", "Paper", "Pen", "Pencil", "Penguin", "Pepper", "Piano", "Picture", "Pig", "Plane", "Planet", "Plant", "Plate", "Pool", "Potato", "Queen", "Quilt", "Rabbit", "Radio", "Rain", "Ring", "Road", "Rock", "Rocket", "Roof", "Room", "Rope", "Rose", "Rug", "Sandwich", "School", "Scissors", "Shark", "Sheep", "Shell", "Shirt", "Snake", "Snow", "Soap", "Sofa", "Spider", "Starfish", "Stone", "Storm", "Strawberry", "Street", "Sugar", "Suitcase", "Sword", "Taxi", "Tea", "Teacher", "Television", "Tent", "Tiger", "Toast", "Tomato", "Tooth", "Towel", "Tower", "Toy", "Tree", "Truck", "Trumpet", "Turtle", "Umbrella", "Unicorn", "Vase", "Violin", "Wall", "Whale", "Wheel", "Windmill", "Wolf", "Worm", "Yacht", "Zebra", "Anchor", "Arrow", "Backpack", "Balloon", "Banana", "Barn", "Battery", "Beach", "Beard", "Belt", "Bone", "Bottle", "Bowl", "Brain", "Brick", "Brush", "Bubble", "Bucket", "Butterfly", "Button", "Cable", "Cactus", "Cage", "Carpet", "Carrot", "Cave", "Chain", "Cheese", "Cherry", "Chess", "Chicken", "Chocolate", "Circle", "Cliff", "Coat", "Coconut", "Comb", "Comet", "Cookie", "Corn", "Cow", "Crab", "Crane", "Crown", "Crystal", "Curtain", "Cushion", "Deer", "Desert", "Dinosaur", "Dolphin", "Donut", "Dragon", "Dress", "Drill", "Drone", "Dust", "Eagle", "Earth", "Feather", "Fence", "Fiddle", "Field", "Finger", "Firetruck", "Flashlight", "Fountain", "Frame", "Fridge", "Garden", "Garlic", "Giraffe", "Glacier", "Glasses", "Gold", "Hammer", "Hand", "Harp", "Helmet", "Hill", "Hose", "Ice", "Ink", "Iron", "Jewel", "Kangaroo", "Kettle", "King", "Knife", "Ladder", "Lantern", "Laptop", "Lava", "Leather", "Library", "Lightbulb", "Lightning", "Lizard", "Lock", "Log", "Lollipop", "Magnet", "Mango", "Marble", "Mattress", "Medal", "Melon", "Microphone", "Microwave", "Money", "Monster", "Mop", "Moss", "Mug", "Museum", "Music", "Mustard", "Noodle", "Nut", "Octopus", "Office", "Onion", "Oven", "Package", "Page", "Panda", "Pants", "Parachute", "Parrot", "Pasta", "Path", "Peach", "Peanut", "Pear", "Pearl", "Pigeon", "Pineapple", "Pipe", "Pirate", "Pond", "Pony", "Popcorn", "Postcard", "Pot", "Puddle", "Pumpkin", "Puppet", "Puzzle", "Pyramid", "Raccoon", "Raft", "Raspberry", "Record", "Refrigerator", "Rice", "Rifle", "Robe", "Saddle", "Sailboat", "Salad", "Salt", "Sand", "Sandal", "Sauce", "Sausage", "Saw", "Scarf", "Scooter", "Screw", "Seahorse", "Seal", "Seed", "Shampoo", "Shelf", "Shovel", "Shower", "Skateboard", "Skeleton", "Ski", "Skull", "Skyscraper", "Sled", "Slippers", "Smoke", "Snail", "Snowflake", "Spaceship", "Spade", "Spaghetti", "Sparkle", "Spear", "Spice", "Sponge", "Spring", "Square", "Squirrel", "Stadium", "Staff", "Stairs", "Stamp", "Stapler", "Statue", "Steak", "Steam", "Sticker", "Stool", "Stove", "Stream", "String", "Submarine", "Suit", "Sunflower", "Sunglasses", "Surfboard", "Sushi", "Swan", "Sweater", "Swing", "Syrup", "Tablet", "Taco", "Tadpole", "Tank", "Tape", "Target", "Telescope", "Temple", "Throne", "Ticket", "Tie", "Tissue", "Toad", "Tool", "Toothbrush", "Torch", "Tornado", "Tractor", "Treasure", "Triangle", "Trophy", "Trousers", "Tulip", "Tunnel", "Turkey", "Typewriter", "Valley", "Van", "Vegetable", "Vehicle", "Vine", "Viola", "Waffle", "Wagon", "Wand", "Wasp", "Waterfall", "Wave", "Wax", "Web", "Well", "Wheat", "Whistle", "Willow", "Wind", "Wine", "Wing", "Wire", "Witch", "Wood", "Yarn", "Yogurt", "Yolk", "Zipper"
+        ];
+
+        // --- Game State Variables ---
+        let timerInterval = null;
+        let roundTimeLeft = ROUND_TIME;
+        let wordCountLeft = STARTING_WORD_COUNT;
+        let currentWordIndex = -1;
+        let wordsForRound = [];
+        let passedWords = [];
+        let correctWordsCount = 0;
+        let speechRecognition = null;
+        let isListening = false;
+
+        // --- DOM Elements ---
+        const introScreen = document.getElementById('introScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const startButton = document.getElementById('startButton');
+        const correctButton = document.getElementById('correctButton');
+        const passButton = document.getElementById('passButton');
+        const listenButton = document.getElementById('listenButton');
+        const timerDisplay = document.getElementById('timer');
+        const wordCountDisplay = document.getElementById('wordCount');
+        const currentWordDisplay = document.getElementById('currentWord');
+        const roundScoreDisplay = document.getElementById('roundScore');
+        const infoText = document.querySelector('.info-text');
+
+        // --- Event Listeners ---
+        startButton.addEventListener('click', startRound);
+        correctButton.addEventListener('click', handleCorrect);
+        passButton.addEventListener('click', handlePass);
+        listenButton.addEventListener('click', toggleListening);
+
+        // --- Game Functions ---
+
+        function startRound() {
+            // Reset state for a new round
+            roundTimeLeft = ROUND_TIME;
+            wordCountLeft = STARTING_WORD_COUNT;
+            correctWordsCount = 0;
+            passedWords = [];
+            
+            // Populate words for this round
+            wordsForRound = shuffleArray([...words]).slice(0, NUM_WORDS_PER_ROUND);
+            currentWordIndex = -1;
+
+            // Update displays
+            roundScoreDisplay.textContent = correctWordsCount;
+            timerDisplay.textContent = roundTimeLeft;
+            wordCountDisplay.textContent = wordCountLeft;
+
+            // Show game screen, hide intro
+            introScreen.style.display = 'none';
+            gameScreen.style.display = 'flex';
+
+            // Start game loop
+            nextWord();
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            timerInterval = setInterval(() => {
+                roundTimeLeft--;
+                timerDisplay.textContent = roundTimeLeft;
+                
+                if (roundTimeLeft <= 0) {
+                    endRound();
+                }
+            }, 1000);
+        }
+
+        function nextWord() {
+            // Check if there are still words in the main list
+            if (currentWordIndex < wordsForRound.length - 1) {
+                currentWordIndex++;
+                currentWordDisplay.textContent = wordsForRound[currentWordIndex];
+            } else if (passedWords.length > 0) {
+                // Circle back to passed words if main list is exhausted
+                wordsForRound = [...passedWords];
+                passedWords = [];
+                currentWordIndex = 0;
+                currentWordDisplay.textContent = wordsForRound[currentWordIndex];
+            } else {
+                // All words completed (correct or passed)
+                endRound();
+            }
+        }
+
+        function handleCorrect() {
+            correctWordsCount++;
+            roundScoreDisplay.textContent = correctWordsCount;
+
+            // Stop listening temporarily to avoid counting button press
+            stopListening();
+            setTimeout(() => {
+                if (isListening) startListening();
+            }, 500);
+
+            // Check if all words are guessed
+            if (correctWordsCount >= NUM_WORDS_PER_ROUND) {
+                endRound();
+            } else {
+                nextWord();
+            }
+        }
+
+        function handlePass() {
+            // Add the current word to the passed list for a second pass
+            if (currentWordIndex !== -1 && !passedWords.includes(wordsForRound[currentWordIndex])) {
+                passedWords.push(wordsForRound[currentWordIndex]);
+            }
+            // Stop listening temporarily to avoid counting button press
+            stopListening();
+            setTimeout(() => {
+                if (isListening) startListening();
+            }, 500);
+
+            nextWord();
+        }
+
+        function endRound() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            stopListening();
+            
+            // Hide game screen, show intro
+            gameScreen.style.display = 'none';
+            introScreen.style.display = 'block';
+
+            // Display results
+            infoText.innerHTML = `Round Over! You guessed ${correctWordsCount} words correctly.<br>Now it's the next player's turn to press start.`;
+        }
+
+        // --- Speech Recognition Functions ---
+        function initializeSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                speechRecognition = new SpeechRecognition();
+                speechRecognition.continuous = true;
+                speechRecognition.interimResults = false;
+                speechRecognition.lang = 'en-US';
+
+                let previousTranscript = '';
+
+                speechRecognition.onresult = (event) => {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                    
+                    const newWords = transcript.replace(previousTranscript, '').trim();
+                    if (newWords.length > 0) {
+                        const wordCount = newWords.split(' ').length;
+                        wordCountLeft -= wordCount;
+                        wordCountDisplay.textContent = Math.max(0, wordCountLeft);
+                    }
+                    previousTranscript = transcript;
+
+                    if (wordCountLeft <= 0) {
+                        endRound();
+                    }
+                };
+
+                speechRecognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                };
+
+                speechRecognition.onend = () => {
+                    if (isListening) {
+                        speechRecognition.start();
+                    }
+                };
+            } else {
+                listenButton.disabled = true;
+                listenButton.textContent = 'Speech not supported';
+            }
+        }
+
+        function startListening() {
+            if (speechRecognition && !isListening) {
+                isListening = true;
+                listenButton.textContent = 'Stop Listening';
+                speechRecognition.start();
+            }
+        }
+
+        function stopListening() {
+            if (speechRecognition && isListening) {
+                isListening = false;
+                listenButton.textContent = 'Start Listening';
+                speechRecognition.stop();
+            }
+        }
+        
+        function toggleListening() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        // A utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Initialize speech recognition on page load
+        initializeSpeechRecognition();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+---
+const reviews = [
+  {
+    quote: "Imran did a great job at catching all the nasty typos and inadvertent format issues that are hard to find, easy to miss and unsightly for production submission. I am much more confident with offering the script for consideration — highly recommend.",
+    name: 'bruce_slater1',
+    type: 'Proofreading',
+  },
+  {
+    quote: "Imran was absolutely AMAZING to work with. He saw my project's goals and designed a killer pitch deck. Not only did he do a stellar job but his turnaround time was swift — drafts in hours. I look forward to collaborating again.",
+    name: 'jeanettevillafa',
+    type: 'Pitch Deck',
+  },
+  {
+    quote: "I can't tell you how pleased I am with Imran's talent, communication, and commitment to make my screenplay the best it could possibly be! To anyone considering using this seller — highly recommend. Awesome job!",
+    name: 'geokram62',
+    type: 'Ghostwriting',
+  },
+  {
+    quote: "It was a delight working with Imran! Great work ethics, punctual, professional and extremely knowledgeable. 'You teach me a new word a day.' Thank you for believing in my project!",
+    name: 'dreabenz',
+    type: 'Consulting',
+  },
+];
+---
+
+<section id="reviews">
+  <div class="wrapper">
+    <p class="section-label reveal">What People Say</p>
+
+    <div class="review-stage reveal reveal-delay-1">
+      <div class="review-quotes">
+        {reviews.map((r, i) => (
+          <div class={`review-item ${i === 0 ? 'active' : ''}`} data-index={i}>
+            <blockquote class="review-quote">&ldquo;{r.quote}&rdquo;</blockquote>
+            <div class="review-meta">
+              <span class="review-name">{r.name}</span>
+              <span class="review-sep">—</span>
+              <span class="review-type">{r.type}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="review-controls" role="tablist" aria-label="Reviews">
+        {reviews.map((r, i) => (
+          <button
+            class={`review-dot ${i === 0 ? 'active' : ''}`}
+            data-target={i}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-label={`Review by ${r.name}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const items = document.querySelectorAll<HTMLElement>('.review-item');
+  const dots = document.querySelectorAll<HTMLButtonElement>('.review-dot');
+  let current = 0;
+  let timer: ReturnType<typeof setInterval>;
+
+  function goTo(idx: number) {
+    items[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    dots[current].setAttribute('aria-selected', 'false');
+    current = idx;
+    items[current].classList.add('active');
+    dots[current].classList.add('active');
+    dots[current].setAttribute('aria-selected', 'true');
+  }
+
+  function next() { goTo((current + 1) % items.length); }
+
+  function startTimer() { timer = setInterval(next, 6000); }
+  function stopTimer() { clearInterval(timer); }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { stopTimer(); goTo(i); startTimer(); });
+  });
+
+  startTimer();
+</script>
+
+<style>
+  #reviews {
+    padding: 96px 0;
+  }
+
+  .review-stage {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .review-quotes {
+    position: relative;
+    min-height: 200px;
+    margin-bottom: 40px;
+  }
+
+  .review-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    pointer-events: none;
+  }
+
+  .review-item.active {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .review-quote {
+    font-family: var(--font-mono);
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    line-height: 1.7;
+    color: var(--fg);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .review-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+  }
+
+  .review-name {
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  .review-sep {
+    color: var(--muted);
+  }
+
+  .review-type {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+  }
+
+  .review-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .review-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: none;
+    background: var(--card-border);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .review-dot.active {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+</style>
