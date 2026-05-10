@@ -261,8 +261,9 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 560px) {
-  .bento { grid-template-columns: 1fr; }
-  .bento .card { aspect-ratio: 3/2; }
+  .bento { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .bento .card { aspect-ratio: 4/3; }
+  .past-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── Divider ── */
@@ -270,6 +271,12 @@ h1, h2, h3, h4 {
   border: none;
   border-top: 1px solid var(--card-border);
   margin: 0;
+}
+
+/* ── Mobile section spacing ── */
+@media (max-width: 768px) {
+  section { padding: 56px 0; }
+  .wrapper { padding: 0 20px; }
 }
 
 /* ── Accessibility ── */
