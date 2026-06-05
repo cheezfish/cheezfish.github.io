@@ -241,14 +241,16 @@ h1, h2, h3, h4 {
   overflow: hidden; /* clips image skew overflow at section boundary */
 }
 
-/* First card in projects grid is featured (wider) */
+/* First card in projects grid is featured (2×2) */
 .bento.bento--projects > a:first-child {
   grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: unset;
 }
 
 @media (max-width: 900px) {
   .bento { grid-template-columns: repeat(2, 1fr); }
-  .bento.bento--projects > a:first-child { grid-column: span 1; }
+  .bento.bento--projects > a:first-child { grid-column: span 1; grid-row: span 1; aspect-ratio: 926 / 428; }
 }
 
 @media (max-width: 560px) {

@@ -8,17 +8,17 @@ const projects = [
     size: 'feat',
   },
   {
-    title: 'BRO & ARROW',
-    img: '/images/project10.webp',
-    url: '/BroArrow',
-    tag: 'Game Dev',
-    size: 'med',
-  },
-  {
     title: 'Echoes',
     img: '/images/echoes-banner.webp',
     url: 'https://echoes-app.netlify.app/',
     tag: 'Geospatial Social Media',
+    size: 'reg',
+  },
+  {
+    title: 'Medley',
+    img: '/images/project1.webp',
+    url: 'https://echoes-app.netlify.app/medley',
+    tag: 'Interaction Design',
     size: 'reg',
   },
   {
@@ -36,10 +36,10 @@ const projects = [
     size: 'reg',
   },
   {
-    title: 'Medley',
-    img: '/images/project1.webp',
-    url: 'https://echoes-app.netlify.app/medley',
-    tag: 'Interaction Design',
+    title: 'BRO & ARROW',
+    img: '/images/project10.webp',
+    url: '/BroArrow',
+    tag: 'Game Dev',
     size: 'reg',
   },
 ];
@@ -178,11 +178,6 @@ function Card({ title, img, url, tag }: Project) {
 
   .section-gap {
     margin: 0;
-  }
-
-  /* BRO & ARROW fills the full row height next to the featured CAFFY card */
-  .bento--projects > a:nth-child(2) {
-    aspect-ratio: unset;
   }
 
   /* Past projects: 2-col to feel more considered */
