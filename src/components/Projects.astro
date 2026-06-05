@@ -180,6 +180,11 @@ function Card({ title, img, url, tag }: Project) {
     margin: 0;
   }
 
+  /* BRO & ARROW fills the full row height next to the featured CAFFY card */
+  .bento--projects > a:nth-child(2) {
+    aspect-ratio: unset;
+  }
+
   /* Past projects: 2-col to feel more considered */
   .past-grid {
     grid-template-columns: repeat(2, 1fr);
